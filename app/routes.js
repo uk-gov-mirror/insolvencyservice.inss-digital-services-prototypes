@@ -647,7 +647,7 @@ router.post('/individual-insolvency-register/v2/errorIssueGuard', function(reque
     var errorIssue = request.session.data['typeOfErrorOrIssue']
     var insolvencyType = request.session.data['insolvencyType']
 
-  if (errorIssue == "Still on register after the insolvency has ended" && insolvencyType == "Individual voluntary arrangement"){
+  if (errorIssue == "Still on register after the insolvency has ended" && insolvencyType == "Individual Voluntary Arrangement"){
         response.redirect("/individual-insolvency-register/v2/when-was-the-insolvency-completed")
     }
 
