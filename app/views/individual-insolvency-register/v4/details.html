@@ -1,0 +1,38 @@
+{% extends "layouts/main-forms.html" %}
+
+{% block pageTitle %}
+{{ serviceName }} – {{ data.contactReason }} - About your complaint
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+   <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form action="upload-guard" method="post" novalidate>
+        <h1 class="govuk-heading-l">Your error or issue</h1>
+
+        <p class="govuk-body">Provide a brief description of your error or issue, if we require any further details in order to assess your report we will contact you.
+</p>
+
+<div class="govuk-form-group">
+
+    <label class="govuk-label govuk-label--m" for="details">
+    Describe your error or issue
+    </label>
+
+  <textarea class="govuk-textarea" id="details" name="details" rows="8" aria-describedby="companyComplaintDetails-hint">{{ data['companyComplaintDetails'] }}</textarea>
+</div>
+
+<button type="submit" class="govuk-button" data-module="govuk-button">
+Continue
+</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

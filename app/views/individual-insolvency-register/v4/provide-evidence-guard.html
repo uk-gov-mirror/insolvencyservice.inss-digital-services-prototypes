@@ -1,0 +1,48 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Individual insolvency register' %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+<form action="provideEvidenceGuard" method="post" novalidate>
+{{ govukRadios({
+  classes: "govuk-radios--inline",
+  name: "provideEvidence",
+  fieldset: {
+    legend: {
+      text: "Can you provide evidence that the individual insolvency is complete?",
+      isPageHeading: true,
+      classes: "govuk-fieldset__legend--l"
+    }
+  },
+  hint: {
+    text: "For example a completion certificate or a discharge notice"
+  },
+  items: [
+    {
+      value: "Yes",
+      text: "Yes"
+    },
+    {
+      value: "No",
+      text: "No"
+    }
+  ]
+}) }}
+
+{{ govukButton({
+  text: "Continue"
+}) }}
+
+            </form>     
+  </div>
+</div>
+{% endblock %}

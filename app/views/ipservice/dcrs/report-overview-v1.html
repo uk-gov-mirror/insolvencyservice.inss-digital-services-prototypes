@@ -1,0 +1,99 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – dashboard
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% block header %}
+  {{ govukHeader() }}
+{{ govukServiceNavigation({
+  serviceName: 'Director conduct report service',
+  serviceUrl: "dashboard.html",
+  navigation: [
+    {
+      href: "dashboard.html",
+      text: "Dashboard",
+      active: true
+    },
+    {
+      href: "user-management/settings.html",
+      text: "Notifications (3)"
+    }
+  ]
+}) }}
+{% endblock %}
+
+{% block content %}
+   <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+   <span class="govuk-caption-l">Virgil Frimpong - DCRS123456</span>
+  <h1 class="govuk-heading-l">Overview</h1>
+
+
+
+{% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+
+{{ govukTaskList({
+  idPrefix: "company-details",
+  items: [
+    {
+      title: {
+        text: "Essential information"
+      },
+      hint: {
+        text: "O of 16 sections completed"
+      },
+      href: "essential-information.html",
+      status: {
+         tag: {
+        text: "Not yet started",
+        classes: "govuk-tag--blue"
+         }
+      }
+    }, 
+    {
+            title: {
+              text: "Supporting evidence"
+            },
+            hint: {
+        text: "You should add any supporting evidence you have to help the Insolvency Service assess the case."
+      },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+    {
+      title: {
+        text: "Further information"
+      },      
+      hint: {
+        text: "Further information will become available after the initial assessment."
+      },
+      status: {
+     
+          text: "Cannot start yet"
+     
+      }
+    },
+    {
+      title: {
+        text: "Submit conduct report"
+      },
+      status: {
+     
+          text: "Cannot start yet"
+     
+      }
+    }
+  ]
+}) }}
+
+    </div>
+{% endblock %}

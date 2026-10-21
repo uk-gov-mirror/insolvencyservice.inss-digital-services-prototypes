@@ -1,0 +1,295 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – dashboard
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% block header %}
+  {{ govukHeader() }}
+{{ govukServiceNavigation({
+  serviceName: 'Director conduct report service',
+  serviceUrl: "dashboardhtml",
+  navigation: [
+    {
+      href: "dashboard.html",
+      text: "Dashboard",
+      active: true
+    },
+    {
+      href: "user-management/settings.html",
+      text: "Notifications (3)"
+    }
+  ]
+}) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back to overview",
+    href: "report-overview.html"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <span class="govuk-caption-l">Virgil Frimpong: DCRS123456</span>
+      <h1 class="govuk-heading-l">Essential information</h1>
+      <p class="govuk-body">Complete all sections before submitting for initial assessment.</p>
+      <p class="govuk-body">0 of 16 sections completed</p>
+      <h2 class="govuk-heading-m">Core information</h2>
+      {% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+
+      {{ govukTaskList({
+        idPrefix: "essential-information-sections",
+        items: [
+          {
+            title: {
+              text: "Insolvency Practitioner Information"
+            },
+            href: "insolvency-practitioner-information/case-officer-full-name.html",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Company Information"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Director Information (Individual)"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Corporate Body Director"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Insolvency Information"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          }
+        ]
+      }) }}
+
+      <h2 class="govuk-heading-m">Potential conduct issues</h2>
+
+      {{ govukTaskList({
+        idPrefix: "potential-conduct-issues",
+        items: [
+          {
+            title: {
+              text: "Not maintaining accounting records"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Insolvent trading"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Detrimental transactions"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Crown misconduct"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Undervalue asset disposals"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Phoenix/successor trading"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Failure to provide goods/services"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Covid financial support misconduct"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Acting as a director whilst disqualified or bankrupt"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "S216 breaches"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Other investigations or potential criminality"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          }
+        ]
+      }) }}
+
+   <!--    <h2 class="govuk-heading-m">Supporting evidence</h2>
+        
+      {{ govukTaskList({
+        idPrefix: "essential-information-sections",
+        items: [
+          {
+            title: {
+              text: "Add supporting evidence"
+            },
+            hint: {
+        text: "You should add any supporting evidence you have to help the Insolvency Service assess the case."
+      },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          }
+        ]
+    }) }} -->
+
+              <h2 class="govuk-heading-m">Submit essential information</h2>
+        
+      {{ govukTaskList({
+        idPrefix: "essential-information-sections",
+        items: [
+          {
+            title: {
+              text: "Check and submit essential information"
+            },
+        
+            status: {
+             
+                text: "Cannot start yet"
+           
+            }
+          }
+        ]
+      }) }}
+    </div>
+  </div>
+{% endblock %}

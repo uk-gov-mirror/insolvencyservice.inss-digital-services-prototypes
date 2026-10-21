@@ -1,0 +1,53 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Individual insolvency register' %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">This {{data.insolvencyType}} will be removed from this register on {{ data.registerRemovalDate }}</h1>
+     <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Full name</dt>
+                                <dd class="govuk-summary-list__value">{{ data.searchTerm }}</dd>
+                            </div>
+                                   <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Type</dt>
+                                <dd class="govuk-summary-list__value">{{ data.insolvencyType }}</dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Staus</dt>
+                                <dd class="govuk-summary-list__value">{{ data.status }}</dd>
+                            </div>
+                             <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">End date (completion)</dt>
+                                <dd class="govuk-summary-list__value">{{ data.endDate }}</dd>
+                            </div>
+                                   <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Register removal date</dt>
+                                <dd class="govuk-summary-list__value">{{ data.registerRemovalDate }}</dd>
+                            </div>
+                            </dl> 
+
+
+{% if data.insolvencyType == 'Debt relief restrictions order (DRRO)'
+   or data.insolvencyType == 'Bankruptcy Restrictions Undertaking' %}   
+    <p class="govuk-body">Due to legislation, this {{ data.insolvencyType }} will be removed from the register the day after the end date.</p>                           
+{% else %}                            
+        <p class="govuk-body">Due to legislation, information will remain on the register for three months following the discharge or notification of completion to the Insolvency Service.</p>                      
+ {% endif %}
+ 
+      </div>
+
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends "layouts/main-forms.html" %}
+
+{% set serviceName = 'Individual insolvency register' %}
+
+{% block pageTitle %}
+{{ serviceName }} – Check your answers
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <form action="confirmation" method="post" novalidate>
+      <h1 class="govuk-heading-l">Check your answers</h1>
+ <p class="govuk-body">Review the information you have provided before submitting your error or issue.</p>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">What type of error or issue are you reporting?</dt>
+          <dd class="govuk-summary-list__value">{{ data['typeOfErrorOrIssue'] | default('Still on register after the insolvency has ended') }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="report-an-error-or-issue">
+              Change<span class="govuk-visually-hidden"> type of error or issue</span>
+            </a>
+          </dd>
+        </div>
+
+        
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">When was the insolvency completed?</dt>
+          <dd class="govuk-summary-list__value">{{ (data['insolvencyCompletedDate-day'] | default('')) ~ ' ' ~ (data['insolvencyCompletedDate-month'] | default('')) ~ ' ' ~ (data['insolvencyCompletedDate-year'] | default('')) | default('Not provided') }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="when-was-the-insolvency-completed">
+              Change<span class="govuk-visually-hidden"> when was the insolvency completed</span>
+            </a>
+          </dd>
+        </div>
+
+              
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Can you provide evidence that the individual insolvency is complete?</dt>
+          <dd class="govuk-summary-list__value">{{ (data['provideEvidence'] | default('Yes')) }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="provide-evidence-guard">
+              Change<span class="govuk-visually-hidden"> when was the insolvency completed</span>
+            </a>
+          </dd>
+        </div>
+  
+
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Full name</dt>
+          <dd class="govuk-summary-list__value">{{ data['fullName'] | default('Jo Black') }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="name">
+              Change<span class="govuk-visually-hidden"> full name</span>
+            </a>
+          </dd>
+        </div>
+
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Email address</dt>
+          <dd class="govuk-summary-list__value">{{ data['email'] | default('jb@example.com') }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="email">
+              Change<span class="govuk-visually-hidden"> email address</span>
+            </a>
+          </dd>
+        </div>
+
+
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Your error or issue</dt>
+          <dd class="govuk-summary-list__value">{{ data['details'] | default('I have evidence that my IVA has been completed and should not be listed') }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="details">
+              Change<span class="govuk-visually-hidden"> your error or issue</span>
+            </a>
+          </dd>
+        </div>
+    <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Do you want to provide us with any documents to support the error or issue?</dt>
+          <dd class="govuk-summary-list__value">{{ data['uploadDocument'] | default('No') }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="upload-guard">
+              Change<span class="govuk-visually-hidden"> upload documents</span>
+            </a>
+          </dd>
+        </div>
+        {% if data['uploadDocument'] == 'Yes' %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Uploaded files</dt>
+          <dd class="govuk-summary-list__value">
+           {{ data['fileUpload'] | default('Test Certificate') }}
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="upload">
+              Change<span class="govuk-visually-hidden"> uploaded files</span>
+            </a>
+          </dd>
+        </div>
+        {% endif %}
+      </dl>
+
+
+      <dl class="govuk-summary-list">
+ 
+
+
+      </dl>
+        {{ govukButton({
+          text: "Submit"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  {% include "find-an-ip/includes/footer-content.html" %}
+{% endblock %}

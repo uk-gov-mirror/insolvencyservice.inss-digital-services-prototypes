@@ -1,0 +1,81 @@
+{% extends "layouts/main.html" %}
+{% set serviceName = 'Individual insolvency register' %}
+
+{% set pageName="Individual insolvency register start page" %}
+
+{% block content %}
+
+ <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+<form action="search-type-guard" method="post" novalidate>     
+<h1 class="govuk-heading-l">Individual insolvency register</h1>
+</div>
+</div>
+ <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+<p class="govuk-body">Search for information about bankruptcies and insolvencies in England and Wales, including:</p>
+
+<ul class="govuk-list govuk-list--bullet">
+  <li>bankruptcy order</li>
+  <li>debt relief order (DRO)</li>
+  <li>individual voluntary arrangement (IVA)</li>
+  <li>debt relief restrictions order (DRRO)</li>
+  <li>bankruptcy restrictions order (BRO) </li>
+</ul>
+
+<p class="govuk-body">You can search using an individual's name,trading name (for sole traders), date of birth, or postcode, or any combination of these.</p> 
+
+<p class="govuk-body">Depending on the type of insolvency, information may remain active on the register for a period of up to 3 months following the discharge or notification of completion to the Insolvency Service.</p>
+
+
+
+{{ govukButton({
+  text: "Start now",
+  isStartButton: true
+}) }}
+</form>
+
+        <h2 class="govuk-heading-m">About the Individual Insolvency Register</h2>
+        <p class="govuk-body">These registers are maintained and kept up to date by <a href="https://www.gov.uk/government/organisations/insolvency-service" class="govuk-link govuk-link--no-visited-state">the Insolvency Service</a>.</p>
+
+
+      
+
+  </div>
+  <div class="govuk-grid-column-one-third">
+   
+<aside class="app-related-items" role="complementary">
+        <h2 class="govuk-heading-m" id="subsection-title">
+            Related content
+        </h2>
+        <nav role="navigation" aria-labelledby="subsection-title">
+            <ul class="govuk-list">
+                <li>
+                    <a class="govuk-link--no-visited-state" href="https://www.gov.uk/get-help-insolvency-service">
+                        Get help from the Insolvency Service
+                    </a>
+                </li>
+                <li>
+                    <a class="govuk-link--no-visited-state" href="https://www.gov.uk/browse/tax/court-claims-debt-bankruptcy">
+                        Find out more about bankruptcy and insolvency
+                    </a>
+                </li>
+                <li>
+                    <a class="govuk-link--no-visited-state" href="https://www.insolvencydirect.bis.gov.uk/ExternalOnlineForms/GeneralEnquiry.aspx">
+                        Give feedback about the Individual Insolvency Register
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </aside>
+
+  </div>
+
+{% endblock %}
+
+
+{% block footer %}
+  {% include "find-an-ip/includes/footer-content.html" %}
+{% endblock %}

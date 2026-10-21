@@ -1,0 +1,50 @@
+{% extends "layouts/main-forms.html" %}
+
+{% set serviceName = 'Insolvency Service' %}
+
+{% block pageTitle %}
+ {{ serviceName }} – {{ data.contactReason }} - upload a form
+{% endblock %}
+
+
+
+{% block beforeContent %}
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+   <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+<form action="check-your-answers" method="post" novalidate>
+{{ govukFileUpload({
+  id: "fileUpload",
+  name: "fileUpload",
+  hint: {
+    text: "You can upload one or more files up to 35MB in total. We accept .jpg, .jpeg, .png, .pdf, .doc, .docx, .xls, .xlsx formats."
+  },
+
+  label: {
+    text: "Upload a file",
+    isPageHeading: true,
+    classes: "govuk-label--l"
+  },
+  javascript: true,
+  multiple: true
+
+}) }}
+
+
+
+
+  {{ govukButton({
+  text: "Continue"
+}) }}
+
+</form>
+
+
+
+{% endblock %}

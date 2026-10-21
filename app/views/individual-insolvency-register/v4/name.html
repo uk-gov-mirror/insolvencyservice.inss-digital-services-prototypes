@@ -1,0 +1,44 @@
+{% extends "layouts/main-forms.html" %}
+{% set serviceName = 'Individual insolvency register' %}
+
+
+
+{% block pageTitle %}
+{{ serviceName }} – {{ data.contactReason }} - Your details
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+   <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form action="email" method="post" novalidate>
+<div class="govuk-form-group">
+  <h1 class="govuk-label-wrapper">
+    <label class="govuk-label govuk-label--l" for="event-name">
+     What is your full name?  
+    </label>
+  </h1>
+  <div id="full-name-hint" class="govuk-hint">
+    Enter your first name, middle name (if applicable), and last name(s)
+  </div>
+  <input class="govuk-input" id="fullName" name="fullName" type="text" spellcheck="false" value="{{ data['fullName'] }}" aria-describedby="Value-hint" inputmode="text">
+</div>
+
+
+<button class="govuk-button" data-module="govuk-button">
+Continue
+</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  {% include "find-an-ip/includes/footer-content.html" %}
+{% endblock %}

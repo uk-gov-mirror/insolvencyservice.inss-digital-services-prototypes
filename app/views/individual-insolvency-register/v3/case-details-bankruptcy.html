@@ -15,7 +15,7 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
-    <h1 class="govuk-heading-l">Case details {{ data.insolvencyType }}</h1>
+    <h1 class="govuk-heading-l">Case details</h1>
 
     <h2 class="govuk-heading-m">Individual details</h2>
     <dl class="govuk-summary-list">
@@ -33,7 +33,7 @@
                                 <dd class="govuk-summary-list__value">Male</dd>
                             </div>
                             <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Work status</dt>
+                                <dt class="govuk-summary-list__key">Work status or occupation</dt>
                                 <dd class="govuk-summary-list__value">Employed</dd>
                             </div>
                             <div class="govuk-summary-list__row">
@@ -75,7 +75,7 @@
         </div>
 
         <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key"> Start date (court order)</dt>
+            <dt class="govuk-summary-list__key"> Start date</dt>
             <dd class="govuk-summary-list__value">
           12 September 2025
             </dd>
@@ -85,7 +85,7 @@
             <dd class="govuk-summary-list__value">Current </dd>
         </div>
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">End date (Discharge)</dt>
+                <dt class="govuk-summary-list__key">End date</dt>
                 <dd class="govuk-summary-list__value">
 12 September 2026         </dd>
             </div>
@@ -121,7 +121,7 @@
     Due to legislation this bankruptcy will:</p>
 <ul class="govuk-list govuk-list--bullet">
     <li>be removed from this register 3 months after it ends.</li>
-    <li>stay on your credit file for 6 years after the bankruptcy order is made. You should check if the entry has been removed after 6 years.
+    <li>stay on your credit file for 6 years after the bankruptcy order is made. 
         <br><br>
         The 3 main UK credit agencies are <a href="https://www.transunion.co.uk/">TransUnion</a>, <a href="https://www.equifax.co.uk/">Equifax</a> and <a href="https://www.experian.co.uk/consumer/experian-credit-score.html">Experian</a>.
     </li> 
@@ -185,12 +185,6 @@
                             </div>
                         </dl>
 
-
-<form action="search-the-individual-insolvency-register" method="post" novalidate>
-{{ govukButton({
-  text: "Start a new search"
-}) }}
-</form>
   </div>
 </div>
 

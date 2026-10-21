@@ -1,0 +1,30 @@
+{% extends "layouts/main-forms.html" %}
+
+{% set serviceName = 'Insolvency Service' %}
+
+{% block pageTitle %}
+{{ serviceName }} – Enquiry submitted
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-panel govuk-panel--confirmation">
+      <h1 class="govuk-panel__title">
+        Your error or issue has been submitted
+      </h1>
+      <div class="govuk-panel__body">
+        Your reference number is:<br><strong>ENQ-{{ data['reference-number'] or '2024001' }}</strong>
+      </div>
+    </div>    
+    <h2 class="govuk-heading-m">What happens next</h2>
+    <p class="govuk-body">
+     A copy of your error or issue has been sent to the email address you provided on the form.
+    </p>
+    <p class="govuk-body">
+      We will aim to respond to your error or issue within [Content TBD]. If you have provided supporting documents, this may take longer.
+    </p>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Individual insolvency register' %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">You need evidence that the  {{data.insolvencyType}} has been completed</h1>
+ <p class="govuk-body">Due to legislation, the insolvency practitioner has to provide the completion certificate within 28 days of it being raised, the information will remain on the register for three months following the notification of completion to the Insolvency Service.</p>     
+ 
+ <p class="govuk-body">You need to contact your insolvency practitioner to request evidence of the completion.</p>
+<p class="govuk-body">The insolvency practitioner should should notifiy us that the individual voluntary arrangement has been completed.</p>
+
+<h2 class="govuk-heading-m">Insolvency practitioner details</h2>  
+<dl class="govuk-summary-list">
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key"> Main insolvency practitioner </dt>
+                                    <dd class="govuk-summary-list__value"> Racheal Marsh </dd>
+                                </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key"> Firm </dt>
+                                    <dd class="govuk-summary-list__value"> AFA Insolvency </dd>
+                                </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key"> Address </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        Suite 6, 4th Floor, Universal Square, Manchester <br>
+                                        M12 6JH </dd>
+                                </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key"> Telephone </dt>
+                                    <dd class="govuk-summary-list__value"> 0161 850 1018 </dd>
+                                </div>
+                            </dl>
+
+<p class="govuk-body">If your insolvency practitioner has failed to meet professional standards, you have to make a complaint to them first.</p>
+
+<p class="govuk-body">If they do not resolve your issue, you can use the <a href="#" class="govuk-link">complain about an insolvency practitioner</a> form to complain to us. You need to provide evidence of your initial complaint.</p>
+                        </p>                            
+
+</div>
+
+</div>
+
+
+
+{% endblock %}

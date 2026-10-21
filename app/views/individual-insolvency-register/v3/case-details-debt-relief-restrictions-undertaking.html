@@ -29,11 +29,11 @@
                                 <dd class="govuk-summary-list__value">Mr</dd>
                             </div>
                             <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Sex</dt>
+                                <dt class="govuk-summary-list__key">Gender</dt>
                                 <dd class="govuk-summary-list__value">Male</dd>
                             </div>
                             <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Work status</dt>
+                                <dt class="govuk-summary-list__key">Work status or occupation</dt>
                                 <dd class="govuk-summary-list__value">Unemployed</dd>
                             </div>
                             <div class="govuk-summary-list__row">
@@ -60,14 +60,14 @@
 
            <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key"> Type </dt>
-            <dd class="govuk-summary-list__value">Debt Relief Restrictions Undertaking</dd>
+            <dd class="govuk-summary-list__value">Debt Relief Restrictions Order</dd>
         </div>
         <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key"> Case name </dt>
             <dd class="govuk-summary-list__value">{{ data.name }} </dd>
         </div>
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Start date (accepted)</dt>
+            <dt class="govuk-summary-list__key">Start date</dt>
             <dd class="govuk-summary-list__value">12 June 2022</dd>
         </div>
 
@@ -81,13 +81,7 @@
             <dt class="govuk-summary-list__key">Duration</dt>
             <dd class="govuk-summary-list__value">5 years</dd>
         </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Restriction reason (misconduct)</dt>
-                <dd class="govuk-summary-list__value">
- On 11 March 2021 {{ data.name }} overstated their turnover to obtain a £50,000 Bounce Back Loan (BBL) to which they were not fully entitled and failed to disclose the BBL in their application for a Debt Relief Order (DRO). </dd>
-            </div>
-
-                        <div class="govuk-summary-list__row">
+        <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Register removal date</dt>
                 <dd class="govuk-summary-list__value">
 13 June 2027      
@@ -96,51 +90,18 @@
 
     </dl>
 
-    <p class="govuk-body">This debt relief restrictions order (DRRO) was preceded by a debt relief order (DRO)</p>
-
-<div class="govuk-inset-text">
-    <h2 class="govuk-heading-m">Debt Relief Order details</h2>
-<dl class="govuk-summary-list">
-
-           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key"> Type </dt>
-            <dd class="govuk-summary-list__value">Debt Relief Order</dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key"> Case name </dt>
-            <dd class="govuk-summary-list__value">{{ data.name }} </dd>
-        </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Insolvency Service reference number</dt>
-            <dd class="govuk-summary-list__value">DRO5796739</dd>
-        </div>
-
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key"> Start date (order)</dt>
-            <dd class="govuk-summary-list__value">
-                5 September 2021
-            </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key"> Status </dt>
-            <dd class="govuk-summary-list__value">Revoked </dd>
-        </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">End date (moratorium period)</dt>
-                <dd class="govuk-summary-list__value">
-12 June 2022          </dd>
-            </div>
-    </dl>
-</div>
+    <p class="govuk-body">This debt relief restrictions order was preceded by a debt relief order in 2021</p>
 
 
 
-<h2 class="govuk-heading-m">This register and credit files [content to be verified]</h2>
+
+
+<h2 class="govuk-heading-m">This register and credit files</h2>
 <p>
-    Due to legislation this Debt Relief Restrictions Undertaking will:</p>
+    Due to legislation this debt relief restrictions order will:</p>
 <ul class="govuk-list govuk-list--bullet">
-    <li>be removed from this register the day after it ends.</li>
-    <li>stay on your credit file for 6 years after the Debt Relief Restrictions Undertaking is made.
+    <li>be removed from this register the day after it ends.</li>
+    <li>stay on your credit file for 6 years after the debt relief restrictions order is made.
         <br><br>
         The 3 main UK credit agencies are <a href="https://www.transunion.co.uk/">TransUnion</a>, <a href="https://www.equifax.co.uk/">Equifax</a> and <a href="https://www.experian.co.uk/consumer/experian-credit-score.html">Experian</a>.
     </li> 
@@ -202,13 +163,6 @@
                                 <dd class="govuk-summary-list__value"> 0300 678 0016 </dd>
                             </div>
                         </dl>
-
-
-<form action="search-the-individual-insolvency-register" method="post" novalidate>
-{{ govukButton({
-  text: "Start a new search"
-}) }}
-</form>
   </div>
 </div>
 

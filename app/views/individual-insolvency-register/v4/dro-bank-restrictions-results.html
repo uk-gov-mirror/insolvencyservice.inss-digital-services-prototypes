@@ -1,0 +1,100 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Individual insolvency register' %}
+{% set pageName = 'Search results' %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-l">Search results</h1>
+      <p class="govuk-body">Your results may include individuals with an alias or a previous name which matches your search criteria.</p>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <form action="{{ resultsPath }}/filter" method="post">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-label--s" for="searchTerm">Search</label>
+          <input class="govuk-input" id="searchTerm" name="searchTerm" value="{{ searchTerm }}" type="text">
+        </div>
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-label--s" for="sortOrder">Sort results by</label>
+          <select class="govuk-select govuk-!-width-full" id="sortOrder" name="sortOrder">
+            <option value="startDate"{% if sortOrder == 'startDate' %} selected{% endif %}>Start date (newest first)</option>
+            <option value="name"{% if sortOrder == 'name' %} selected{% endif %}>Name (A to Z)</option>
+          </select>
+        </div>
+        <fieldset class="govuk-fieldset" aria-describedby="type-filter-hint">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Filter by type</legend>
+          <div id="type-filter-hint" class="govuk-hint">Select the types of restriction orders to include.</div>
+          <div class="govuk-checkboxes">
+            {% for type in typeOptions %}
+              <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" id="type-filter-{{ loop.index }}" name="typeFilter" type="checkbox" value="{{ type }}"{% if type in selectedTypes %} checked{% endif %}>
+                <label class="govuk-label govuk-checkboxes__label" for="type-filter-{{ loop.index }}">{{ type }}</label>
+              </div>
+            {% endfor %}
+          </div>
+        </fieldset>
+        <button class="govuk-button govuk-!-margin-top-4" type="submit">Apply filter</button>
+        <p class="govuk-body"><a class="govuk-link" href="{{ resultsPath }}/clear-filters">Clear filters</a></p>
+      </form>
+    </div>
+
+    <div class="govuk-grid-column-two-thirds">
+      <p class="govuk-body">Showing {{ showingFrom }} to {{ showingTo }} of {{ totalResults }} results{% if searchTerm %} for <strong>{{ searchTerm }}</strong>{% endif %}</p>
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+      <div class="govuk-list govuk-list--divided">
+        {% for result in caseResults %}
+          <div>
+            <h2 class="govuk-heading-s"><a class="govuk-link" href="data-case-details?recordId={{ result.recordId }}">{{ result.name }}</a></h2>
+            <dl class="govuk-summary-list govuk-summary-list--no-border">
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Type of insolvency</dt>
+                <dd class="govuk-summary-list__value">{{ result.insolvencyType }}</dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Date of birth</dt>
+                <dd class="govuk-summary-list__value">{{ result.dob }}</dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Postcode</dt>
+                <dd class="govuk-summary-list__value">{{ result.postcode }}</dd>
+              </div>
+            </dl>
+          </div>
+        {% else %}
+          <p class="govuk-body">No results found. Try changing your search or selected types.</p>
+        {% endfor %}
+      </div>
+
+      {% if totalPages > 1 %}
+        <nav class="govuk-pagination" aria-label="Pagination">
+          {% if pageNumber > 1 %}
+            <div class="govuk-pagination__prev">
+              <a class="govuk-link govuk-pagination__link" href="{{ resultsPath }}{% if pageNumber > 2 %}-{{ pageNumber - 1 }}{% endif %}.html" rel="prev">Previous<span class="govuk-visually-hidden"> page</span></a>
+            </div>
+          {% endif %}
+          {% if pageNumber < totalPages %}
+            <div class="govuk-pagination__next">
+              <a class="govuk-link govuk-pagination__link" href="{{ resultsPath }}-{{ pageNumber + 1 }}.html" rel="next">Next<span class="govuk-visually-hidden"> page</span></a>
+            </div>
+          {% endif %}
+        </nav>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  {% include "find-an-ip/includes/footer-content.html" %}
+{% endblock %}

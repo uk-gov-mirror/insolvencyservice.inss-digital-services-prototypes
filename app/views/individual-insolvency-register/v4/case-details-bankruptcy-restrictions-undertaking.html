@@ -1,0 +1,205 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Individual insolvency register' %}
+
+{% set pageName="Case details" %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-l">Case details</h1>
+
+    <h2 class="govuk-heading-m">Individual details</h2>
+    <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Full name</dt>
+                                <dd class="govuk-summary-list__value">{{ data.name }}</dd>
+                            </div>
+    
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Title</dt>
+                                <dd class="govuk-summary-list__value">Mr</dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Gender</dt>
+                                <dd class="govuk-summary-list__value">Male</dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Work status or occupation</dt>
+                                <dd class="govuk-summary-list__value">Employed</dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Date of birth</dt>
+                                <dd class="govuk-summary-list__value">{{ data.caseResult.dob | default('17/09/1981') }}</dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key"> Last known address </dt>
+                                <dd class="govuk-summary-list__value"> 44 Bancroft, Tamworth,  {{ data.caseResult.postcode | default('B77 2ES') }}</dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key"> Previous address(es)</dt>
+                                <dd class="govuk-summary-list__value"><p>12 Willsford Avenue, Tamworth, B74 2HR</p></dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key"> This person may also be known as </dt>
+                                <dd class="govuk-summary-list__value"> No other names found </dd>
+                            </div>
+                        </dl>
+
+ <p class="govuk-body"> The individual details may have changed since the insolvency and therefore might not reflect the person's current address or occupation. </p>                       
+
+ 
+  <h2 class="govuk-heading-m">Insolvency case details</h2>
+<dl class="govuk-summary-list">
+
+    
+
+           <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key"> Type </dt>
+            <dd class="govuk-summary-list__value">Bankruptcy restrictions order (BRO)</dd>
+        </div>
+    
+
+
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Start date (accepted)</dt>
+            <dd class="govuk-summary-list__value">21 May 2026</dd>
+        </div>
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">End date</dt>
+            <dd class="govuk-summary-list__value">
+              21 May 2036
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Duration</dt>
+            <dd class="govuk-summary-list__value">10 years</dd>
+        </div>
+            <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Court details</dt>
+            <dd class="govuk-summary-list__value">
+                
+              <!-- This bankruptcy restrictions order was preceded by a bankruptcy at the -->
+                Office of the Adjudicator, case number 5179178 of 2025
+               
+            </dd>
+        </div>
+        <!--   <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Restriction reason (misconduct)</dt>
+                <dd class="govuk-summary-list__value">
+On 24 August 2020, {{ data.name }} obtained a £20,000 Bounce Back Loan (‘BBL’) to which they were not entitled because they were not trading a self-employed business on 1 March 2020, and was therefore not eligible to apply for a BBL. </dd>
+            </div> -->
+
+                        <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Register removal date</dt>
+                <dd class="govuk-summary-list__value">
+                  22 May 2036        
+                </dd>
+            </div>
+
+    </dl>
+ 
+ 
+ 
+ <p class="govuk-body">This bankruptcy restrictions order was preceded by a bankruptcy in 2025</p>
+
+
+<!--   <h3 class="govuk-heading-s">Bankruptcy details</h3>
+<dl class="govuk-summary-list">
+   <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Court details</dt>
+            <dd class="govuk-summary-list__value">Office of the Adjudicator, case number 5179178 of 2025</dd>
+        </div>
+    </dl>
+
+-->
+     
+
+
+<h2 class="govuk-heading-m">This register and credit files</h2>
+<p>
+    Due to legislation this bankruptcy restrictions order will:</p>
+<ul class="govuk-list govuk-list--bullet">
+    <li>be removed from this register the next working day after it ends.</li>
+    <li>stay on your credit file for 6 years after the bankruptcy order is made. 
+        <br><br>
+        The 3 main UK credit agencies are <a href="https://www.transunion.co.uk/">TransUnion</a>, <a href="https://www.equifax.co.uk/">Equifax</a> and <a href="https://www.experian.co.uk/consumer/experian-credit-score.html">Experian</a>.
+    </li> 
+</ul>
+
+
+
+ {% include "individual-insolvency-register/v2/includes/section-error-or-issues.html" %}
+<h2 class="govuk-heading-m">Guidance</h2>
+<p class="govuk-body"><a href="https://www.gov.uk/government/publications/bankruptcy-restrictions-orders-and-undertakings/bankruptcy-restrictions-orders-and-undertakings">What is a bankruptcy restrictions order (BRO)</a></p>
+<p class="govuk-body"><a href="https://www.gov.uk/government/publications/guide-to-bankruptcy/guide-to-bankruptcy">What is a bankruptcy</a></p>
+
+        
+
+<!--
+<h2 class="govuk-heading-m">Insolvency practioner contact details</h2>
+
+<dl class="govuk-summary-list">
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key"> Main insolvency practitioner </dt>
+                                    <dd class="govuk-summary-list__value"> Racheal Marsh </dd>
+                                </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key"> Firm </dt>
+                                    <dd class="govuk-summary-list__value"> AFA Insolvency </dd>
+                                </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key"> Address </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        Suite 6, 4th Floor, Universal Square, Manchester <br>
+                                        M12 6JH </dd>
+                                </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key"> Telephone </dt>
+                                    <dd class="govuk-summary-list__value"> 0161 850 1018 </dd>
+                                </div>
+                            </dl> -->
+
+<h2 class="govuk-heading-m">Insolvency service contact details</h2>    
+
+<dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key"> Insolvency Service office </dt>
+                                <dd class="govuk-summary-list__value"> Personal Insolvency </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key"> Contact </dt>
+                                <dd class="govuk-summary-list__value"> Enquiry Desk </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key"> Address </dt>
+                                <dd class="govuk-summary-list__value"> The Insolvency Service, Met Office, Fitzroy Road, Exeter </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key"> Postcode </dt>
+                                <dd class="govuk-summary-list__value"> EX1 3PB </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key"> Telephone </dt>
+                                <dd class="govuk-summary-list__value"> 0300 678 0016 </dd>
+                            </div>
+                        </dl>
+
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+  {% include "find-an-ip/includes/footer-content.html" %}
+{% endblock %}

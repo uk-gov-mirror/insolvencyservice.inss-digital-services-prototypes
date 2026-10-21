@@ -1,0 +1,199 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – dashboard
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% block header %}
+  {{ govukHeader() }}
+{{ govukServiceNavigation({
+  serviceName: 'Director conduct report service',
+  serviceUrl: "dashboard.html",
+  navigation: [
+    {
+      href: "dashboard.html",
+      text: "Dashboard"
+    },
+    {
+      href: "user-management/settings.html",
+      text: "Notifications (3)"
+    },
+    {
+      href: "user-management/settings.html",
+      text: "User management"
+    }
+  ]
+}) }}
+{% endblock %}
+
+{% block content %}
+   <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+   <span class="govuk-caption-l">Virgil Frimpong - DCRS123456</span>
+  <h1 class="govuk-heading-l">Overview</h1>
+
+        <h2 class="govuk-heading-m">Core information</h2>
+      {% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+
+      {{ govukTaskList({
+        idPrefix: "essential-information-sections",
+        items: [
+          {
+            title: {
+              text: "Contact information"
+            },
+            href: "insolvency-practitioner-information/case-officer-full-name.html",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Company information"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Director information"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Insolvency information"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          }
+        
+        ]
+      }) }}
+
+
+<h2 class="govuk-heading-m">Potential conduct issues</h2>
+
+{% set conductIssueOptions = [
+  { value: "accounting-records", text: "Not maintaining accounting records" },
+  { value: "insolvent-trading", text: "Insolvent trading" },
+  { value: "detrimental-transactions", text: "Detrimental transactions" },
+  { value: "crown-misconduct", text: "Crown misconduct" },
+  { value: "undervalue-asset-disposals", text: "Undervalue asset disposals" },
+  { value: "phoenix-successor-trading", text: "Phoenix/successor trading" },
+  { value: "failure-to-provide-goods-services", text: "Failure to provide goods/services" },
+  { value: "covid-financial-support-misconduct", text: "Covid financial support misconduct" },
+  { value: "acting-whilst-disqualified-or-bankrupt", text: "Acting as a director whilst disqualified or bankrupt" },
+  { value: "s216-breaches", text: "S216 breaches" },
+  { value: "other-investigations-or-potential-criminality", text: "Other investigations or potential criminality" }
+] %}
+{% set selectedConductIssues = data.conductIssues or [] %}
+{% if selectedConductIssues | length %}
+  {% set conductSelectionStatus = { text: "Completed" } %}
+{% else %}
+  {% set conductSelectionStatus = {
+    tag: {
+      text: "Not yet started",
+      classes: "govuk-tag--blue"
+    }
+  } %}
+{% endif %}
+{% set conductTaskItems = [
+  {
+    title: {
+      text: "Potential conduct issues"
+    },
+    href: "evidence-of-director-misconduct.html",
+    status: conductSelectionStatus
+  }
+] %}
+
+{% for issue in conductIssueOptions %}
+  {% if issue.value in selectedConductIssues %}
+    {% set conductTaskItems = conductTaskItems.concat([{
+      title: {
+        text: issue.text
+      },
+      href: "#",
+      status: {
+        tag: {
+          text: "Not yet started",
+          classes: "govuk-tag--blue"
+        }
+      }
+    }]) %}
+  {% endif %}
+{% endfor %}
+
+{{ govukTaskList({
+  idPrefix: "conduct-issues",
+  items: conductTaskItems
+}) }}
+
+ <h2 class="govuk-heading-m">Supporting evidence</h2>
+   {{ govukTaskList({
+        idPrefix: "supporting-evidence-sections",
+        items: [
+          {
+            title: {
+              text: "Add supporting evidence"
+            },
+             href: "#",
+            status: {
+             
+                 tag: {
+          text: "Not yet started",
+          classes: "govuk-tag--blue"
+        }
+           
+            }
+          }
+        ]
+      }) }}
+
+
+
+
+              <h2 class="govuk-heading-m">Submit report</h2>
+        
+      {{ govukTaskList({
+        idPrefix: "essential-information-sections",
+        items: [
+          {
+            title: {
+              text: "Check and submit report"
+            },
+        
+            status: {
+             
+                text: "Cannot start yet"
+           
+            }
+          }
+        ]
+      }) }}
+
+    </div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – dashboard
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% block header %}
+  {{ govukHeader() }}
+{{ govukServiceNavigation({
+  serviceName: 'Director conduct report service',
+  serviceUrl: "dashboard.html",
+  navigation: [
+    {
+      href: "dashboard.html",
+      text: "Dashboard",
+      active: true
+    },
+    {
+      href: "user-management/settings.html",
+      text: "Notifications (3)"
+    },
+    {
+      href: "user-management/settings.html",
+      text: "User management"
+    }
+  ]
+}) }}
+{% endblock %}
+
+{% block content %}
+   <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+  <h1 class="govuk-heading-l">Dashboard</h1>
+
+
+
+  <a href="report-overview.html" class="" data-module="govuk-button">Test Case</a>
+
+
+
+
+
+    </div>
+{% endblock %}

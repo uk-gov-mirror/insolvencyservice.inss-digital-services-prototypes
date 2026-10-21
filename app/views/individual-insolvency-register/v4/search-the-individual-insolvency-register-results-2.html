@@ -1,0 +1,160 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Individual insolvency register' %}
+
+{% set pageName="Search results" %}
+{% set searchTerm = data.searchTerm | default('John Hall') %}
+{% set searchTermParts = searchTerm.split(' ') %}
+{% set firstName = searchTermParts[0] %}
+{% set lastName = searchTermParts[1] if searchTermParts.length > 1 else 'Hall' %}
+{% set pageTwoResults = [
+  {name: firstName ~ ' Edward ' ~ lastName, dob: '22 May 1965', trading: 'West End Recovery', postcode: 'SW1V 3DG', insolvencyType: 'Bankruptcy', detailsPage: 'case-details-bankruptcy.html'},
+  {name: firstName ~ ' Ethan ' ~ lastName, dob: '08 January 1972', trading: 'Harbour Administrators', postcode: 'SE10 0DX', insolvencyType: 'Debt Relief Order', detailsPage: 'case-details-debt-relief-order.html'},
+  {name: firstName ~ ' Felix ' ~ lastName, dob: '14 September 1980', trading: 'Bridge Debt Solutions', postcode: 'N4 3HQ', insolvencyType: 'Individual Voluntary Arrangement', detailsPage: 'case-details-individual-voluntary-arrangement.html'},
+  {name: firstName ~ ' Finn ' ~ lastName, dob: '19 March 1987', trading: 'Capital Recovery Ltd', postcode: 'E2 8AA', insolvencyType: 'Debt relief restrictions order (DRRO)', detailsPage: 'case-details-debt-relief-restrictions-undertaking.html'},
+  {name: firstName ~ ' Gabriel ' ~ lastName, dob: '26 July 1978', trading: 'Apex Advisory', postcode: 'B1 1AA', insolvencyType: 'Individual Voluntary Arrangement', detailsPage: 'case-details-individual-voluntary-arrangement.html'},
+  {name: firstName ~ ' George ' ~ lastName, dob: '02 October 1962', trading: lastName ~ 'field Insolvency', postcode: 'M3 2ER', insolvencyType: 'Bankruptcy', detailsPage: 'case-details-bankruptcy.html'},
+  {name: firstName ~ ' Henry ' ~ lastName, dob: '15 December 1984', trading: 'Northgate Resolutions', postcode: 'LS1 4HR', insolvencyType: 'Debt Relief Order', detailsPage: 'case-details-debt-relief-order.html'},
+  {name: firstName ~ ' Hugo ' ~ lastName, dob: '07 June 1971', trading: 'Meridian Solutions', postcode: 'G2 6NH', insolvencyType: 'Individual Voluntary Arrangement', detailsPage: 'case-details-individual-voluntary-arrangement.html'},
+  {name: firstName ~ ' Ian ' ~ lastName, dob: '18 April 1990', trading: 'Bristol Recovery Group', postcode: 'BS1 5DP', insolvencyType: 'Individual Voluntary Arrangement', detailsPage: 'case-details-individual-voluntary-arrangement.html'},
+  {name: firstName ~ ' Isaac ' ~ lastName, dob: '01 August 1988', trading: 'Hawthorn Advisory', postcode: 'YO1 7NP', insolvencyType: 'Individual Voluntary Arrangement', detailsPage: 'case-details-individual-voluntary-arrangement.html'}
+] %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+
+ <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+<h1 class="govuk-heading-l">Search results</h1>
+
+<p class="govuk-body">Your results may include individuals with an alias or a previous name which matches your search criteria.</p><p class="govuk-body"> If you expected to see a name in the register and it is not there, <a href="" >tell the Insolvency Service.</a></p>
+
+<form action="search-the-individual-insolvency-register-results-2" method="post" novalidate>
+  <div class="govuk-form-group">
+    <label class="govuk-label govuk-label--m" for="searchTerm">
+      Name of individual or trading name
+    </label>
+    <input class="govuk-input govuk-!-width-one-half" id="searchTerm" name="searchTerm" value="{{ searchTerm }}" type="text">
+  </div>
+
+  <button class="govuk-button" type="submit">Search</button>
+</form>
+
+  </div>
+  </div>
+
+
+      <p class="govuk-body">Showing 11 to 20 of 47 results for <strong>{{ searchTerm }}</strong></p>
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+          <ul class="govuk-list govuk-list--divided">
+            {%- for result in pageTwoResults %}
+              <li>
+                <h2 class="govuk-heading-s"><a class="govuk-link" href="{{ result.detailsPage }}?name={{ result.name | urlencode }}&trading={{ result.trading | urlencode }}&postcode={{ result.postcode | urlencode }}&dob={{ result.dob | urlencode }}">{{ result.name }}</a></h2>
+                <dl class="govuk-summary-list govuk-summary-list--no-border">
+                     <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key govuk-!-padding-top-1 govuk-!-padding-bottom-1">
+                      Trading name
+                    </dt>
+                    <dd class="govuk-summary-list__value govuk-!-padding-top-1 govuk-!-padding-bottom-1">
+                      {{ result.companyName }}
+                    </dd>
+                  </div>
+                                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key govuk-!-padding-top-1 govuk-!-padding-bottom-1">
+                      Type of insolvency
+                    </dt>
+                    <dd class="govuk-summary-list__value govuk-!-padding-top-1 govuk-!-padding-bottom-1">
+                      {{ result.insolvencyType }}
+                    </dd>
+                  </div>
+                   <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key govuk-!-padding-top-1 govuk-!-padding-bottom-1">
+                     Start date
+                    </dt>
+                    <dd class="govuk-summary-list__value govuk-!-padding-top-1 govuk-!-padding-bottom-1">
+                      {{ result.StartDate }}
+                    </dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key  govuk-!-padding-top-1 govuk-!-padding-bottom-1">
+                      Date of birth
+                    </dt>
+                    <dd class="govuk-summary-list__value govuk-!-padding-top-1 govuk-!-padding-bottom-1">
+                      {{ result.dob }}
+                    </dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key govuk-!-padding-top-1 govuk-!-padding-bottom-1">
+                      Postcode
+                    </dt>
+                    <dd class="govuk-summary-list__value govuk-!-padding-top-1 govuk-!-padding-bottom-1">
+                      {{ result.postcode }}
+                    </dd>
+                  </div>
+              </dl>
+                <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+              </li>
+            {%- endfor %}
+          </ul>
+
+
+
+<!--  pagination  -->
+
+<nav class="govuk-pagination" aria-label="Pagination">
+  <div class="govuk-pagination__prev">
+    <a class="govuk-link govuk-pagination__link" href="search-the-individual-insolvency-register-results.html" rel="prev">
+      <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+        <path d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"></path>
+      </svg>
+      <span class="govuk-pagination__link-title">
+        Previous<span class="govuk-visually-hidden"> page</span>
+      </span>
+    </a>
+  </div>
+  <ul class="govuk-pagination__list">
+    <li class="govuk-pagination__item">
+      <a class="govuk-link govuk-pagination__link" href="search-the-individual-insolvency-register-results.html" aria-label="Page 1">
+        1
+      </a>
+    </li>
+    <li class="govuk-pagination__item govuk-pagination__item--current">
+      <a class="govuk-link govuk-pagination__link" href="#" aria-label="Page 2" aria-current="page">
+        2
+      </a>
+    </li>
+    <li class="govuk-pagination__item">
+      <a class="govuk-link govuk-pagination__link" href="search-the-individual-insolvency-register-results-3.html" aria-label="Page 3">
+        3
+      </a>
+    </li>
+    <li class="govuk-pagination__item">
+      <a class="govuk-link govuk-pagination__link" href="search-the-individual-insolvency-register-results-4.html" aria-label="Page 4">
+        4
+      </a>
+    </li>
+    <li class="govuk-pagination__item">
+      <a class="govuk-link govuk-pagination__link" href="search-the-individual-insolvency-register-results-5.html" aria-label="Page 5">
+        5
+      </a>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+  {% include "find-an-ip/includes/footer-content.html" %}
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Individual insolvency register' %}
+{% set pageName = 'Case details' %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">Case details</h1>
+
+      <h2 class="govuk-heading-m">Individual details</h2>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Full name</dt>
+          <dd class="govuk-summary-list__value">{{ caseResult.fullName }}</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Date of birth</dt>
+          <dd class="govuk-summary-list__value">{{ caseResult.formattedDateOfBirth }}</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Gender</dt>
+          <dd class="govuk-summary-list__value">{{ caseResult.gender }}</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Last known address</dt>
+          <dd class="govuk-summary-list__value">
+            {% if caseResult.ukAddress.addressLine1 %}{{ caseResult.ukAddress.addressLine1 }},{% endif %}
+            {% if caseResult.ukAddress.addressLine2 %}{{ caseResult.ukAddress.addressLine2 }},{% endif %}
+            {% if caseResult.ukAddress.townOrCity %}{{ caseResult.ukAddress.townOrCity }},{% endif %}
+            {{ caseResult.ukAddress.postcode }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Previous address</dt>
+          <dd class="govuk-summary-list__value">
+            {% if caseResult.ukPreviousAddress.addressLine1 %}{{ caseResult.ukPreviousAddress.addressLine1 }},{% endif %}
+            {% if caseResult.ukPreviousAddress.addressLine2 %}{{ caseResult.ukPreviousAddress.addressLine2 }},{% endif %}
+            {% if caseResult.ukPreviousAddress.townOrCity %}{{ caseResult.ukPreviousAddress.townOrCity }},{% endif %}
+            {{ caseResult.ukPreviousAddress.postcode }}
+          </dd>
+        </div>
+      </dl>
+
+      <h2 class="govuk-heading-m">Insolvency case details</h2>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Type</dt>
+          <dd class="govuk-summary-list__value">{{ caseResult.type }}</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Case name</dt>
+          <dd class="govuk-summary-list__value">{{ caseResult.fullName }}</dd>
+        </div>
+      </dl>
+
+      <p class="govuk-body">The individual details may have changed since the insolvency and therefore might not reflect the person's current address.</p>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  {% include "find-an-ip/includes/footer-content.html" %}
+{% endblock %}

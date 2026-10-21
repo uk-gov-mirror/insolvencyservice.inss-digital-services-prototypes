@@ -33,7 +33,7 @@
                                 <dd class="govuk-summary-list__value">Male</dd>
                             </div>
                             <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Work status</dt>
+                                <dt class="govuk-summary-list__key">Work status or occupation</dt>
                                 <dd class="govuk-summary-list__value">Employed</dd>
                             </div>
                             <div class="govuk-summary-list__row">
@@ -60,15 +60,7 @@
   <h2 class="govuk-heading-m">Insolvency case details</h2>
 <dl class="govuk-summary-list">
 
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Court details</dt>
-            <dd class="govuk-summary-list__value">
-                
-              <!-- This bankruptcy restrictions order was preceded by a bankruptcy at the -->
-                Office of the Adjudicator, case number 5179178 of 2025
-               
-            </dd>
-        </div>
+    
 
            <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key"> Type </dt>
@@ -91,6 +83,15 @@
         <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Duration</dt>
             <dd class="govuk-summary-list__value">10 years</dd>
+        </div>
+            <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Court details</dt>
+            <dd class="govuk-summary-list__value">
+                
+              <!-- This bankruptcy restrictions order was preceded by a bankruptcy at the -->
+                Office of the Adjudicator, case number 5179178 of 2025
+               
+            </dd>
         </div>
         <!--   <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Restriction reason (misconduct)</dt>
@@ -194,11 +195,6 @@ On 24 August 2020, {{ data.name }} obtained a £20,000 Bounce Back Loan (‘BBL�
                         </dl>
 
 
-<form action="search-the-individual-insolvency-register" method="post" novalidate>
-{{ govukButton({
-  text: "Start a new search"
-}) }}
-</form>
   </div>
 </div>
 

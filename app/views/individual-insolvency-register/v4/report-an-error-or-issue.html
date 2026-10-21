@@ -1,0 +1,71 @@
+{% extends "layouts/main-forms.html" %}
+{% set serviceName = 'Individual insolvency register' %}
+
+
+
+{% block pageTitle %}
+{{ serviceName }} – {{ data.contactReason }} - Your details
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+   <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form action="errorIssueGuard" method="post" novalidate>
+ <h1 class="govuk-heading-l">Report an error or issue</h1>
+     <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Full name</dt>
+                                <dd class="govuk-summary-list__value">{{ data.name }}</dd>
+                            </div>
+                                   <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Type</dt>
+                                <dd class="govuk-summary-list__value">{{ data.insolvencyType }}</dd>
+                                   </div>
+                            </dl>    
+
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{{ govukRadios({
+  name: "typeOfErrorOrIssue",
+  fieldset: {
+    legend: {
+      text: "What type of error or issue are you reporting?",
+      isPageHeading: false,
+      classes: "govuk-fieldset__legend--m"
+    }
+  },
+  items: [
+    {
+      value: "Incorrect details",
+      text: "Incorrect details"
+    },
+    {
+      value: "Still on register after the insolvency has ended",
+      text: "Still on register after the insolvency has ended"
+    },
+    {
+      value: "I have information about someone on the register",
+      text: "I have information about someone on the register"
+    }
+  ]
+}) }}
+
+
+<button class="govuk-button" data-module="govuk-button">
+Continue
+</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  {% include "find-an-ip/includes/footer-content.html" %}
+{% endblock %}

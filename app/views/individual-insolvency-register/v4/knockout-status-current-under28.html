@@ -1,0 +1,45 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Individual insolvency register' %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">This {{data.insolvencyType}} has been completed within the last 28 days</h1>
+ <p class="govuk-body">Due to legislation, your insolvency practitioner has to provide the completion certificate within 28 days of it being raised, the information will remain on the register for three months following the  notification of completion to the Insolvency Service.</p>                
+  
+<dl class="govuk-summary-list">
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key"> Main insolvency practitioner </dt>
+                                    <dd class="govuk-summary-list__value"> Racheal Marsh </dd>
+                                </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key"> Firm </dt>
+                                    <dd class="govuk-summary-list__value"> AFA Insolvency </dd>
+                                </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key"> Address </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        Suite 6, 4th Floor, Universal Square, Manchester <br>
+                                        M12 6JH </dd>
+                                </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key"> Telephone </dt>
+                                    <dd class="govuk-summary-list__value"> 0161 850 1018 </dd>
+                                </div>
+                            </dl>
+
+</div>
+
+</div>
+
+
+
+{% endblock %}

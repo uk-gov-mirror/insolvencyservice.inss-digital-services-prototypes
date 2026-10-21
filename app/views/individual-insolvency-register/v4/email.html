@@ -1,0 +1,42 @@
+{% extends "layouts/main-forms.html" %}
+
+{% block pageTitle %}
+{{ serviceName }} – {{ data.contactReason }} - Your details
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+   <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form action="details" method="post" novalidate>
+
+<div class="govuk-form-group">
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--l" for="email">
+        What is your email address?
+      </label>
+    </h1>
+  <div id="email-hint" class="govuk-hint">
+    We’ll only use this to contact you about your enquiry or complaint.
+  </div>
+  <input class="govuk-input" id="email" name="email" type="email" value="{{ data['email']}}" spellcheck="false" aria-describedby="email-hint" autocomplete="email">
+</div>
+
+
+<button class="govuk-button" data-module="govuk-button">
+Continue
+</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  {% include "find-an-ip/includes/footer-content.html" %}
+{% endblock %}
