@@ -1,0 +1,117 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – case officer details
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: 'dashboard.html',
+    navigation: [
+      {
+        href: 'dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: 'user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'javascript:window.history.back()'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form action="report-overview" method="post" novalidate>
+<span class="govuk-caption-l">Potential conduct issues</span>
+       {{ govukCheckboxes({
+  name: "conductIssues",
+  fieldset: {
+    legend: {
+      text: "Do you have any evidence of director misconduct in any of the following areas?",
+      isPageHeading: true,
+      classes: "govuk-fieldset__legend--l"
+    }
+  },
+  hint: {
+    text: "Select all that apply"
+  },
+  items: [
+    {
+      value: "accounting-records",
+      text: "Not maintaining accounting records"
+    },
+    {
+      value: "insolvent-trading",
+      text: "Insolvent trading"
+    },
+    {
+      value: "detrimental-transactions",
+      text: "Detrimental transactions"
+    },
+    {
+      value: "crown-misconduct",
+      text: "Crown misconduct"
+    },
+    {
+      value: "undervalue-asset-disposals",
+      text: "Undervalue asset disposals"
+    },
+    {
+      value: "phoenix-successor-trading",
+      text: "Phoenix/successor trading"
+    },
+    {
+      value: "failure-to-provide-goods-services",
+      text: "Failure to provide goods/services"
+    },
+    {
+      value: "covid-financial-support-misconduct",
+      text: "Covid financial support misconduct"
+    },
+    {
+      value: "acting-whilst-disqualified-or-bankrupt",
+      text: "Acting as a director whilst disqualified or bankrupt"
+    },
+    {
+      value: "s216-breaches",
+      text: "S216 breaches"
+    },
+    {
+      value: "other-investigations-or-potential-criminality",
+      text: "Other investigations or potential criminality"
+    },
+    {
+      divider: "or"
+    },
+    {
+      value: "none",
+      text: "I do not have any evidence of director misconduct at this time",
+      behaviour: "exclusive"
+    }
+  ]
+}) }}
+
+<button type="submit" class="govuk-button" data-module="govuk-button">
+        Continue
+      </form>
+    </div>
+  </div>
+{% endblock %}

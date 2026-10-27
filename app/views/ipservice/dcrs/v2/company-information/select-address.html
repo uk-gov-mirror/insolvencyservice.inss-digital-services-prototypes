@@ -1,0 +1,106 @@
+{% extends "layouts/main-forms.html" %}
+
+{% block pageTitle %}
+  Task list template – {{ serviceName }} – Name
+{% endblock %}
+
+{% block beforeContent %}
+
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+   <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form action="confirm-principle-address" method="post" novalidate>
+
+
+
+
+
+  {{ govukRadios({
+    name: "select-an-address",
+    classes: "govuk-radios--small",
+    fieldset: {
+      legend: {
+        text: "Select an address",
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--l"
+      }
+    },
+    formGroup: {
+      beforeInputs: {
+        html: "<p class='govuk-body'>6 addresses found for <b>wr11nl</b> and <b>1</b>. <a href='find-address' class='govuk-link'>Search again</a></p>"
+      }
+    },
+    items: [
+      {
+        value: "1 Washington Street, Worcester, WR1 1NL",
+        text: "1 Washington Street, Worcester, WR1 1NL",
+        attributes: {
+          "data-ga-question": "Select an address",
+          "data-ga-answer": "Answer 1"
+        }
+      },
+      {
+        value: "10 Washington Street, Worcester, WR1 1NL",
+        text: "10 Washington Street, Worcester, WR1 1NL",
+        attributes: {
+          "data-ga-question": "Select an address",
+          "data-ga-answer": "Answer 2"
+        }
+      },
+      {
+        value: "11 Washington Street, Worcester, WR1 1NL",
+        text: "11 Washington Street, Worcester, WR1 1NL",
+        attributes: {
+          "data-ga-question": "Select an address",
+          "data-ga-answer": "Answer 2"
+        }
+      },
+      {
+        value: "101 Washington Street, Worcester, WR1 1NL",
+        text: "101 Washington Street, Worcester, WR1 1NL",
+        attributes: {
+          "data-ga-question": "Select an address",
+          "data-ga-answer": "Answer 3"
+        }
+      },
+      {
+        value: "110 Washington Street, Worcester, WR1 1NL",
+        text: "110 Washington Street, Worcester, WR1 1NL",
+        attributes: {
+          "data-ga-question": "Select an address",
+          "data-ga-answer": "Answer 4"
+        }
+      },
+      {
+        value: "111 Washington Street, Worcester, WR1 1NL",
+        text: "111 Washington Street, Worcester, WR1 1NL",
+        attributes: {
+          "data-ga-question": "Select an address",
+          "data-ga-answer": "Answer 5"
+        }
+      }
+    ]
+  }) }}
+
+  
+
+  <div class="govuk-button-group">
+    {{ govukButton({
+      text: "Use this address"
+    }) }}
+    <button type="submit" formaction="/ipservice/dcrs/v2/company-information/save-and-return" class="govuk-button govuk-button--secondary" data-module="govuk-button">Save and return to overview</button>
+  </div>
+  <p class="govuk-body govuk-!-margin-bottom-0"><a href="address-manual" class="govuk-link">Enter address manually</a></p>
+</div>
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – Company details
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: '../dashboard.html',
+    navigation: [
+      {
+        href: '../dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: '../user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'javascript:window.history.back()'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Company information</span>
+      <h1 class="govuk-heading-l">Company details</h1>
+      <p class="govuk-body">These details were retrieved</p>
+
+      {% set companyName = data.companyName | default('Company 1 Ltd', true) %}
+      {% set companyNumber = data.companyNumber | default(data.q | default('12345678', true), true) %}
+      {% set registeredOfficeAddressLine1 = data.registeredOfficeAddressLine1 | default('1 Example Street', true) %}
+      {% set registeredOfficeAddressLine2 = data.registeredOfficeAddressLine2 %}
+      {% set registeredOfficeTown = data.registeredOfficeTown | default('Example Town', true) %}
+      {% set registeredOfficeCounty = data.registeredOfficeCounty %}
+      {% set registeredOfficePostcode = data.registeredOfficePostcode | default('EX4 5PL', true) %}
+      {% set incorporationDay = data['dateOfIncorporation-day'] | default('12', true) %}
+      {% set incorporationMonth = data['dateOfIncorporation-month'] | default('7', true) %}
+      {% set incorporationYear = data['dateOfIncorporation-year'] | default('2022', true) %}
+         <form action="dates-traded" method="post" novalidate>
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Company name</dt>
+            <dd class="govuk-summary-list__value">{{ companyName }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Company number</dt>
+            <dd class="govuk-summary-list__value">{{ companyNumber }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Date of incorporation</dt>
+            <dd class="govuk-summary-list__value">{{ incorporationDay | formatDate(incorporationMonth, incorporationYear) }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Registered office address</dt>
+          <dd class="govuk-summary-list__value">
+            {{ registeredOfficeAddressLine1 }}{% if registeredOfficeAddressLine2 %}<br>{{ registeredOfficeAddressLine2 }}{% endif %}<br>{{ registeredOfficeTown }}{% if registeredOfficeCounty %}<br>{{ registeredOfficeCounty }}{% endif %}<br>{{ registeredOfficePostcode }}
+          </dd>
+        </div>
+        </dl>
+
+     
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+          <button type="submit" formaction="/ipservice/dcrs/v2/company-information/save-and-return" class="govuk-button govuk-button--secondary" data-module="govuk-button">Save and return to overview</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

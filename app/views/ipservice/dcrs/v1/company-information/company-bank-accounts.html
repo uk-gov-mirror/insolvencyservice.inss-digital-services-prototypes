@@ -1,0 +1,98 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – Company bank accounts
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: '../dashboard.html',
+    navigation: [
+      {
+        href: '../dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: '../user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'javascript:window.history.back()'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Company information</span>
+      <h1 class="govuk-heading-l">Company bank accounts</h1>
+
+      <h2 class="govuk-heading-m">Bank account details</h2>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Bank or building society</dt>
+          <dd class="govuk-summary-list__value">{{ data.companyBankProviderName | default('Not provided', true) }}</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Name on the account</dt>
+          <dd class="govuk-summary-list__value">{{ data.companyBankAccountName | default('Not provided', true) }}</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Sort code</dt>
+          <dd class="govuk-summary-list__value">{{ data.companyBankSortCode | default('Not provided', true) }}</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Account number</dt>
+          <dd class="govuk-summary-list__value">{{ data.companyBankAccountNumber | default('Not provided', true) }}</dd>
+        </div>
+        {% if data.companyBuildingSocietyRollNumber %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Building society roll number</dt>
+            <dd class="govuk-summary-list__value">{{ data.companyBuildingSocietyRollNumber }}</dd>
+          </div>
+        {% endif %}
+      </dl>
+
+      <form action="/ipservice/dcrs/v1/company-information/company-bank-accounts-answer" method="post" novalidate>
+        {{ govukRadios({
+          name: "addAnotherCompanyBankAccount",
+          value: data.addAnotherCompanyBankAccount,
+          fieldset: {
+            legend: {
+              text: "Do you want to enter another company bank account?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: "yes",
+              text: "Yes"
+            },
+            {
+              value: "no",
+              text: "No"
+            }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

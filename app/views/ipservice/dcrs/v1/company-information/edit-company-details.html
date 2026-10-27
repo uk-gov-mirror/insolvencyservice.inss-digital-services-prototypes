@@ -1,0 +1,167 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – Change company details
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: '../dashboard.html',
+    navigation: [
+      {
+        href: '../dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: '../user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'javascript:window.history.back()'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Company information</span>
+      <h1 class="govuk-heading-l">Change company details</h1>
+      <p class="govuk-body">Update any details that are out of date or incorrect. Your changes will replace the Companies House details in this report.</p>
+
+      <form action="company-details" method="post" novalidate>
+        {{ govukInput({
+          label: {
+            text: "Company name"
+          },
+          id: "company-name",
+          name: "companyName",
+          value: data.companyName | default('Company 1 Ltd', true),
+          autocomplete: "organization",
+          spellcheck: false
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Company number"
+          },
+          id: "company-number",
+          name: "companyNumber",
+          value: data.companyNumber | default(data.q | default('12345678', true), true),
+          classes: "govuk-input--width-10",
+          spellcheck: false
+        }) }}
+
+        {{ govukRadios({
+          idPrefix: "company-status",
+          name: "companyStatus",
+          value: data.companyStatus | default('Active', true),
+          fieldset: {
+            legend: {
+              text: "Company status",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: "Active",
+              text: "Active"
+            },
+            {
+              value: "Inactive",
+              text: "Inactive"
+            }
+          ]
+        }) }}
+
+        <fieldset class="govuk-fieldset" aria-describedby="registered-office-address-hint">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">Registered office address</legend>
+          <div id="registered-office-address-hint" class="govuk-hint">Enter the company's registered address.</div>
+
+          {{ govukInput({
+            label: { text: "Address line 1" },
+            id: "registered-office-address-line-1",
+            name: "registeredOfficeAddressLine1",
+            value: data.registeredOfficeAddressLine1 | default('1 Example Street', true),
+            autocomplete: "address-line1",
+            classes: "govuk-input--width-30"
+          }) }}
+
+          {{ govukInput({
+            label: { text: "Address line 2 (optional)" },
+            id: "registered-office-address-line-2",
+            name: "registeredOfficeAddressLine2",
+            value: data.registeredOfficeAddressLine2,
+            autocomplete: "address-line2",
+            classes: "govuk-input--width-30"
+          }) }}
+
+          {{ govukInput({
+            label: { text: "Town or city" },
+            id: "registered-office-town",
+            name: "registeredOfficeTown",
+            value: data.registeredOfficeTown | default('Example Town', true),
+            autocomplete: "address-level2",
+            classes: "govuk-input--width-20"
+          }) }}
+
+          {{ govukInput({
+            label: { text: "County (optional)" },
+            id: "registered-office-county",
+            name: "registeredOfficeCounty",
+            value: data.registeredOfficeCounty,
+            autocomplete: "address-level1",
+            classes: "govuk-input--width-20"
+          }) }}
+
+          {{ govukInput({
+            label: { text: "Postcode" },
+            id: "registered-office-postcode",
+            name: "registeredOfficePostcode",
+            value: data.registeredOfficePostcode | default('EX4 5PL', true),
+            autocomplete: "postal-code",
+            classes: "govuk-input--width-10"
+          }) }}
+        </fieldset>
+
+        {{ govukDateInput({
+          id: "date-of-incorporation",
+          namePrefix: "dateOfIncorporation",
+          fieldset: {
+            legend: {
+              text: "Date of incorporation",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            { name: "day", classes: "govuk-input--width-2", label: "Day", value: data["dateOfIncorporation-day"] | default('12', true) },
+            { name: "month", classes: "govuk-input--width-2", label: "Month", value: data["dateOfIncorporation-month"] | default('7', true) },
+            { name: "year", classes: "govuk-input--width-4", label: "Year", value: data["dateOfIncorporation-year"] | default('2022', true) }
+          ]
+        }) }}
+
+
+   
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

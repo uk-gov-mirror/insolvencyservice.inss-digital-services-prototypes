@@ -31,20 +31,21 @@
 {% block beforeContent %}
   {{ govukBackLink({
     text: 'Back',
-    href: '../report-overview.html'
+    href: 'javascript:window.history.back()'
   }) }}
 {% endblock %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <form action="essential-information.html" method="post" novalidate>
-<span class="govuk-caption-l">Insolvency practitioner information: question 1 of 6</span>
+      <form action="../report-overview" method="post" novalidate>
+
+ <h1 class="govuk-heading-l">Contact information</h1>
+
+ <p class="govuk-body">Provide details of the person in your firm who has day-to-day responsibility for the case.</p>
         {{ govukInput({
           label: {
-            text: "What is the case officers full name?",
-            classes: "govuk-label--l",
-            isPageHeading: true
+            text: "Full name"
           },
           id: "case-officer-full-name",
           name: "caseOfficerFullName",
@@ -53,12 +54,33 @@
           spellcheck: false
         }) }}
 
+        {{ govukInput({
+          label: {
+            text: "Email address"
+          },
+          id: "case-officer-email",
+          name: "caseOfficerEmail",
+          type: "email",
+          value: data.caseOfficerEmail,
+          autocomplete: "email",
+          spellcheck: false
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Phone number"
+          },
+          id: "case-officer-phone-number",
+          name: "caseOfficerPhoneNumber",
+          type: "tel",
+          value: data.caseOfficerPhoneNumber,
+          autocomplete: "tel",
+          classes: "govuk-input--width-20",
+          spellcheck: false
+        }) }}
+
         {{ govukButton({
           text: "Continue"
-        }) }}
-         {{ govukButton({
-          text: "Save and return to overview",
-          classes: "govuk-button--secondary govuk-!-margin-left-2"
         }) }}
       </form>
     </div>

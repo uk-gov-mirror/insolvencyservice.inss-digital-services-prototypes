@@ -1,0 +1,107 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – Check and submit report
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: 'dashboard.html',
+    navigation: [
+      {
+        href: 'dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: 'user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'javascript:window.history.back()'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-xl">Company 1 Ltd - DCRS123456</span>
+      <h1 class="govuk-heading-xl">Check and submit report</h1>
+      <p class="govuk-body">Check the insolvency practitioner information below before submitting the report.</p>
+
+      {% if data.capacity == 'administrator' %}
+        {% set appointmentCapacity = 'Administrator' %}
+      {% elif data.capacity == 'receiver-administration' %}
+        {% set appointmentCapacity = 'Receiver (administration)' %}
+      {% elif data.capacity == 'liquidator' %}
+        {% set appointmentCapacity = 'Liquidator' %}
+      {% else %}
+        {% set appointmentCapacity = 'Not provided' %}
+      {% endif %}
+
+      {% set appointmentDate = data['appointmentDate-day'] | formatDate(data['appointmentDate-month'], data['appointmentDate-year']) %}
+<h2 class="govuk-heading-l">Core information</h2>
+      <h3 class="govuk-heading-m">Insolvency practitioner information</h3>
+      <h4 class="govuk-heading-s">Contact information</h4>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Full name</dt>
+          <dd class="govuk-summary-list__value">{{ data.caseOfficerFullName | default('Not provided', true) }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="Insolvency-practitioner-Information/contact-details.html">Change<span class="govuk-visually-hidden"> full name</span></a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Email address</dt>
+          <dd class="govuk-summary-list__value">{{ data.caseOfficerEmail | default('Not provided', true) }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="Insolvency-practitioner-Information/contact-details.html">Change<span class="govuk-visually-hidden"> email address</span></a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Phone number</dt>
+          <dd class="govuk-summary-list__value">{{ data.caseOfficerPhoneNumber | default('Not provided', true) }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="Insolvency-practitioner-Information/contact-details.html">Change<span class="govuk-visually-hidden"> phone number</span></a>
+          </dd>
+        </div>
+      </dl>
+
+            <h4 class="govuk-heading-s">Appointment details</h4>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">In what capacity are you appointed?</dt>
+          <dd class="govuk-summary-list__value">{{ appointmentCapacity }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="Insolvency-practitioner-Information/appointment-details.html">Change<span class="govuk-visually-hidden"> appointment capacity</span></a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">What date were you appointed?</dt>
+          <dd class="govuk-summary-list__value">{{ appointmentDate }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="Insolvency-practitioner-Information/appointment-details.html">Change<span class="govuk-visually-hidden"> appointment date</span></a>
+          </dd>
+        </div>
+      </dl>
+
+      <p class="govuk-body">I confirm that the information provided in this report is based on the information available to me at this time and is correct to the best of my knowledge, information and belief.</p>
+
+      {{ govukButton({
+        text: "Agree and submit report"
+      }) }} 
+    </div>
+  </div>
+{% endblock %}

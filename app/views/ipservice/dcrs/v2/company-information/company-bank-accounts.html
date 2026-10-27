@@ -1,0 +1,126 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – Company bank accounts
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: '../dashboard.html',
+    navigation: [
+      {
+        href: '../dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: '../user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'javascript:window.history.back()'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <span class="govuk-caption-l">Company information for {{ data.companyName }}</span>
+      <h1 class="govuk-heading-l">Company bank accounts</h1>
+
+      {% set companyBankAccounts = data.companyBankAccounts or [] %}
+      {% if companyBankAccounts.length %}
+        {% set bankAccountQuestion = 'Do you want to add another company bank account?' %}
+      {% else %}
+        {% set bankAccountQuestion = 'Do you want to add a company bank account?' %}
+      {% endif %}
+      {% if companyBankAccounts.length %}
+        {% for bankAccount in companyBankAccounts %}
+          {% set bankAccountHeading = 'Bank account details' %}
+          {% if loop.index > 1 %}
+            {% set bankAccountHeading = 'Bank account details ' + loop.index %}
+          {% endif %}
+
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">{{ bankAccountHeading }}</h2>
+              <ul class="govuk-summary-card__actions">
+                <li class="govuk-summary-card__action">
+                  <a class="govuk-link" href="/ipservice/dcrs/v2/company-information/prepare-remove-bank-account?index={{ loop.index0 }}">Remove<span class="govuk-visually-hidden"> {{ bankAccountHeading | lower }}</span></a>
+                </li>
+              </ul>
+            </div>
+            <div class="govuk-summary-card__content">
+              <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Name of bank</dt>
+                  <dd class="govuk-summary-list__value">{{ bankAccount.companyBankProviderName | default('Not provided', true) }}</dd>
+                  <dd class="govuk-summary-list__actions"><a class="govuk-link" href="/ipservice/dcrs/v2/company-information/edit-company-bank-account?index={{ loop.index0 }}">Change<span class="govuk-visually-hidden"> {{ bankAccountHeading | lower }}</span></a></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Name on the account</dt>
+                  <dd class="govuk-summary-list__value">{{ bankAccount.companyBankAccountName | default('Not provided', true) }}</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Sort code</dt>
+                  <dd class="govuk-summary-list__value">{{ bankAccount.companyBankSortCode | default('Not provided', true) }}</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Account number</dt>
+                  <dd class="govuk-summary-list__value">{{ bankAccount.companyBankAccountNumber | default('Not provided', true) }}</dd>
+                </div>
+                  <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Do you hold unmarked copies of the bank statements for this account for the last 12 months of trading?</dt>
+                  <dd class="govuk-summary-list__value">{{ bankAccount.holdsUnmarkedBankStatements | default('No', true) }}</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <form action="/ipservice/dcrs/v2/company-information/company-bank-accounts-answer" method="post" novalidate>
+        {{ govukRadios({
+          name: "addAnotherCompanyBankAccount",
+          value: data.addAnotherCompanyBankAccount,
+          fieldset: {
+            legend: {
+              text: bankAccountQuestion,
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: "yes",
+              text: "Yes"
+            },
+            {
+              value: "no",
+              text: "No"
+            }
+          ]
+        }) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+          <button type="submit" formaction="/ipservice/dcrs/v2/company-information/save-and-return" class="govuk-button govuk-button--secondary" data-module="govuk-button">Save and return to overview</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – Dates traded
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: '../dashboard.html',
+    navigation: [
+      {
+        href: '../dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: '../user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'javascript:window.history.back()'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Company information</span>
+      <h1 class="govuk-heading-l">Dates traded</h1>
+      <p class="govuk-body">Enter the dates the company traded, if known.</p>
+
+      <form action="trading-name" method="post" novalidate>
+        {{ govukDateInput({
+          id: "dates-traded-from",
+          namePrefix: "datesTradedFrom",
+          fieldset: {
+            legend: {
+              text: "Dates traded from (Optional)",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "For example, 12 9 2020"
+          },
+          items: [
+            { name: "day", classes: "govuk-input--width-2", label: "Day", value: data["datesTradedFrom-day"] },
+            { name: "month", classes: "govuk-input--width-2", label: "Month", value: data["datesTradedFrom-month"] },
+            { name: "year", classes: "govuk-input--width-4", label: "Year", value: data["datesTradedFrom-year"] }
+          ]
+        }) }}
+
+        {{ govukDateInput({
+          id: "dates-traded-to",
+          namePrefix: "datesTradedTo",
+          fieldset: {
+            legend: {
+              text: "Dates traded to (Optional)",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "For example, 30 6 2024"
+          },
+          items: [
+            { name: "day", classes: "govuk-input--width-2", label: "Day", value: data["datesTradedTo-day"] },
+            { name: "month", classes: "govuk-input--width-2", label: "Month", value: data["datesTradedTo-month"] },
+            { name: "year", classes: "govuk-input--width-4", label: "Year", value: data["datesTradedTo-year"] }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

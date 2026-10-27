@@ -1,0 +1,181 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – Check and submit report
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: 'dashboard.html',
+    navigation: [
+      {
+        href: 'dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: 'user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'javascript:window.history.back()'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <span class="govuk-caption-xl">Submit report forCompany 1 Ltd</span>
+      <h1 class="govuk-heading-xl">Check and submit report</h1>
+      <p class="govuk-body">Check the insolvency practitioner information below before submitting the report.</p>
+
+      {% if data.capacity == 'administrator' %}
+        {% set appointmentCapacity = 'Administrator' %}
+      {% elif data.capacity == 'receiver-administration' %}
+        {% set appointmentCapacity = 'Receiver (administration)' %}
+      {% elif data.capacity == 'liquidator' %}
+        {% set appointmentCapacity = 'Liquidator' %}
+      {% else %}
+        {% set appointmentCapacity = 'Not provided' %}
+      {% endif %}
+
+      {% set appointmentDate = data['appointmentDate-day'] | formatDate(data['appointmentDate-month'], data['appointmentDate-year']) %}
+<h2 class="govuk-heading-l">Case details</h2>
+      <h3 class="govuk-heading-m">Contact information</h3>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Full name</dt>
+          <dd class="govuk-summary-list__value">{{ data.caseOfficerFullName | default('Not provided', true) }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="Insolvency-practitioner-Information/contact-details.html">Change<span class="govuk-visually-hidden"> full name</span></a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Email address</dt>
+          <dd class="govuk-summary-list__value">{{ data.caseOfficerEmail | default('Not provided', true) }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="Insolvency-practitioner-Information/contact-details.html">Change<span class="govuk-visually-hidden"> email address</span></a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Phone number</dt>
+          <dd class="govuk-summary-list__value">{{ data.caseOfficerPhoneNumber | default('Not provided', true) }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="Insolvency-practitioner-Information/contact-details.html">Change<span class="govuk-visually-hidden"> phone number</span></a>
+          </dd>
+        </div>
+      </dl>
+
+      <h3 class="govuk-heading-m">Company information</h3>
+      {% set companyBankAccounts = data.companyBankAccounts or [] %}
+      <dl class="govuk-summary-list">
+
+    
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Did the company use an alternative trading name?</dt>
+            <dd class="govuk-summary-list__value">{{ data.companyUsesAlternativeTradingName | capitalize }}</dd>
+            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="company-information/trading-name.html">Change<span class="govuk-visually-hidden"> alternative trading name answer</span></a></dd>
+          </div>
+        {% if data.companyUsesAlternativeTradingName == 'yes' and data.alternativeTradingName %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Alternative trading name</dt>
+            <dd class="govuk-summary-list__value">{{ data.alternativeTradingName }}</dd>
+            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="company-information/trading-name.html">Change<span class="govuk-visually-hidden"> alternative trading name</span></a></dd>
+          </div>
+        {% endif %}
+        {% if data['datesTradedFrom-day'] or data['datesTradedFrom-month'] or data['datesTradedFrom-year'] or data['datesTradedTo-day'] or data['datesTradedTo-month'] or data['datesTradedTo-year'] %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Dates traded</dt>
+            <dd class="govuk-summary-list__value">
+              {% if data['datesTradedFrom-day'] or data['datesTradedFrom-month'] or data['datesTradedFrom-year'] %}
+                From {{ data['datesTradedFrom-day'] | formatDate(data['datesTradedFrom-month'], data['datesTradedFrom-year']) }}
+              {% endif %}
+              {% if data['datesTradedTo-day'] or data['datesTradedTo-month'] or data['datesTradedTo-year'] %}
+                {% if data['datesTradedFrom-day'] or data['datesTradedFrom-month'] or data['datesTradedFrom-year'] %}<br>{% endif %}
+                To {{ data['datesTradedTo-day'] | formatDate(data['datesTradedTo-month'], data['datesTradedTo-year']) }}
+              {% endif %}
+            </dd>
+            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="company-information/dates-traded.html">Change<span class="govuk-visually-hidden"> dates traded</span></a></dd>
+          </div>
+        {% endif %}
+        {% if data.holdsCompanyBankingDetails %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Do you have details of the company’s banking providers?</dt>
+            <dd class="govuk-summary-list__value">{{ data.holdsCompanyBankingDetails | capitalize }}</dd>
+            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="company-information/bank-detail-guard.html">Change<span class="govuk-visually-hidden"> company banking answer</span></a></dd>
+          </div>
+        {% endif %}
+        {% if data.holdsCompanyBankingDetails == 'yes' %}
+          {% for bankAccount in companyBankAccounts %}
+            {% set bankAccountHeading = 'Bank account details' %}
+            {% if loop.index > 1 %}{% set bankAccountHeading = 'Bank account details ' + loop.index %}{% endif %}
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">{{ bankAccountHeading }}</dt>
+              <dd class="govuk-summary-list__value">
+                Name of bank: {{ bankAccount.companyBankProviderName | default('Not provided', true) }}<br>
+                Name on the account: {{ bankAccount.companyBankAccountName | default('Not provided', true) }}<br>
+                Sort code: {{ bankAccount.companyBankSortCode | default('Not provided', true) }}<br>
+                Account number: {{ bankAccount.companyBankAccountNumber | default('Not provided', true) }}<br>
+                Do you hold unmarked copies of the bank statements for this account for the last 12 months of trading?: {{ bankAccount.holdsUnmarkedBankStatements | capitalize }}
+              </dd>
+              <dd class="govuk-summary-list__actions"><a class="govuk-link" href="/ipservice/dcrs/v2/company-information/edit-company-bank-account?index={{ loop.index0 }}">Change<span class="govuk-visually-hidden"> {{ bankAccountHeading | lower }}</span></a></dd>
+            </div>
+
+            {% if bankAccount.companyBankAccountAnalysisCompleted %}
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Have you completed any analysis on any company bank accounts?</dt>
+                <dd class="govuk-summary-list__value">{{ bankAccount.companyBankAccountAnalysisCompleted | capitalize }}</dd>
+                <dd class="govuk-summary-list__actions"><a class="govuk-link" href="/ipservice/dcrs/v2/company-information/edit-company-bank-account?index={{ loop.index0 }}">Change<span class="govuk-visually-hidden"> bank account analysis answer</span></a></dd>
+              </div>
+            {% endif %}
+          {% endfor %}
+          {% if data.addAnotherCompanyBankAccount %}
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Do you want to add another company bank account?</dt>
+              <dd class="govuk-summary-list__value">{{ data.addAnotherCompanyBankAccount | capitalize }}</dd>
+              <dd class="govuk-summary-list__actions"><a class="govuk-link" href="company-information/company-bank-accounts.html">Change<span class="govuk-visually-hidden"> add another bank account answer</span></a></dd>
+            </div>
+          {% endif %}
+        {% endif %}
+        {% if data.holdsElectronicRecords %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Did the company use electronic records?</dt>
+            <dd class="govuk-summary-list__value">{{ data.holdsElectronicRecords | capitalize }}</dd>
+            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="company-information/electronic-records.html">Change<span class="govuk-visually-hidden"> electronic records answer</span></a></dd>
+          </div>
+        {% endif %}
+        {% if data.electronicRecordsAvailable %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Are these records still available?</dt>
+            <dd class="govuk-summary-list__value">{{ data.electronicRecordsAvailable | capitalize }}</dd>
+            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="company-information/electronic-records-available-guard.html">Change<span class="govuk-visually-hidden"> records availability answer</span></a></dd>
+          </div>
+        {% endif %}
+        {% if data.electronicRecordsObtained %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Have you taken steps to obtain secure copies or password-protect these records?</dt>
+            <dd class="govuk-summary-list__value">{{ data.electronicRecordsObtained | capitalize }}</dd>
+            <dd class="govuk-summary-list__actions"><a class="govuk-link" href="company-information/electronic-records-obtain.html">Change<span class="govuk-visually-hidden"> secure copies answer</span></a></dd>
+          </div>
+        {% endif %}
+      </dl>
+      <p class="govuk-body">I confirm that the information provided in this report is based on the information available to me at this time and is correct to the best of my knowledge, information and belief.</p>
+
+      {{ govukButton({
+        text: "Agree and submit report"
+      }) }} 
+    </div>
+  </div>
+{% endblock %}

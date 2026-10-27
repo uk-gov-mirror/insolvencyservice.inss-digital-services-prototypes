@@ -1,0 +1,84 @@
+{% extends "layouts/main-forms.html" %}
+
+{% block pageTitle %}
+  Task list template – {{ serviceName }} – Name
+{% endblock %}
+
+{% block beforeContent %}
+
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block content %}
+   <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+<span class="govuk-caption-l">Company information</span>
+      <h1 class="govuk-heading-l">Confirm company</h1>
+
+      <p class="govuk-body">We have matched the following company:</p>
+  
+      {% set companyNumber = data.companyNumber | default(data.q | default('12345678', true), true) %}
+      {% set registeredOfficeAddressLine1 = data.registeredOfficeAddressLine1 | default('1 Example Street', true) %}
+      {% set registeredOfficeAddressLine2 = data.registeredOfficeAddressLine2 %}
+      {% set registeredOfficeTown = data.registeredOfficeTown | default('Example Town', true) %}
+      {% set registeredOfficeCounty = data.registeredOfficeCounty %}
+      {% set registeredOfficePostcode = data.registeredOfficePostcode | default('EX4 5PL', true) %}
+      {% set incorporationDay = data['dateOfIncorporation-day'] | default('12', true) %}
+      {% set incorporationMonth = data['dateOfIncorporation-month'] | default('7', true) %}
+      {% set incorporationYear = data['dateOfIncorporation-year'] | default('2022', true) %}
+      <form action="/ipservice/dcrs/v1/company-information/confirm-company" method="post" novalidate>
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Company name</dt>
+            <dd class="govuk-summary-list__value">{{ companyName }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Company number</dt>
+            <dd class="govuk-summary-list__value">{{ companyNumber }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Date of incorporation</dt>
+            <dd class="govuk-summary-list__value">{{ incorporationDay | formatDate(incorporationMonth, incorporationYear) }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Registered office address</dt>
+          <dd class="govuk-summary-list__value">
+            {{ registeredOfficeAddressLine1 }}{% if registeredOfficeAddressLine2 %}<br>{{ registeredOfficeAddressLine2 }}{% endif %}<br>{{ registeredOfficeTown }}{% if registeredOfficeCounty %}<br>{{ registeredOfficeCounty }}{% endif %}<br>{{ registeredOfficePostcode }}
+          </dd>
+        </div>
+        </dl>
+
+        {{ govukRadios({
+          name: "correctCompany",
+          fieldset: {
+            legend: {
+              text: "Is this the correct company?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: "yes",
+              text: "Yes"
+            },
+            {
+              value: "no",
+              text: "No"
+            }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Confirm company"
+        }) }}
+ 
+      </form>
+    </div>
+  </div>
+{% endblock %}

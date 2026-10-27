@@ -32,32 +32,74 @@
 {% block content %}
    <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-   <span class="govuk-caption-l">Virgil Frimpong - DCRS123456</span>
   <h1 class="govuk-heading-l">Overview</h1>
+    {% set companyName = data.companyName | default('Company 1 Ltd', true) %}
+      {% set companyNumber = data.companyNumber | default(data.q | default('12345678', true), true) %}
+      {% set incorporationDay = data['dateOfIncorporation-day'] | default('12', true) %}
+      {% set incorporationMonth = data['dateOfIncorporation-month'] | default('7', true) %}
+      {% set incorporationYear = data['dateOfIncorporation-year'] | default('2022', true) %}
+      {% set companyName = data.companyName | default('Company 1 Ltd', true) %}
+      {% set companyNumber = data.companyNumber | default(data.q | default('12345678', true), true) %}
+      {% set caseType = data.caseType | default('Director conduct report', true) %}
+      {% set appointmentDate = data['appointmentDate-day'] ~ '/' ~ data['appointmentDate-month'] ~ '/' ~ data['appointmentDate-year'] | default('12 June 2026', true) %}
 
-        <h2 class="govuk-heading-m">Core information</h2>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Company name</dt>
+          <dd class="govuk-summary-list__value">{{ companyName }}</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Company number</dt>
+          <dd class="govuk-summary-list__value">{{ companyNumber }}</dd>
+        </div>
+           <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Type of case</dt>
+          <dd class="govuk-summary-list__value">{{ caseType }}</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Appointment date</dt>
+          <dd class="govuk-summary-list__value">{{ appointmentDate }}</dd>
+        </div>
+      </dl>
+
+        <h2 class="govuk-heading-m">Case details</h2>
       {% from "govuk/components/task-list/macro.njk" import govukTaskList %}
 
+      {% set contactDetailsStarted = data.caseOfficerFullName or data.caseOfficerEmail or data.caseOfficerPhoneNumber %}
+      {% set appointmentDetailsComplete = data.capacity and data["appointmentDate-day"] and data["appointmentDate-month"] and data["appointmentDate-year"] %}
+      {% if appointmentDetailsComplete %}
+        {% set practitionerInformationStatus = { text: "Completed" } %}
+      {% elif contactDetailsStarted %}
+        {% set practitionerInformationStatus = {
+          tag: {
+            text: "In progress",
+            classes: "govuk-tag--light-blue"
+          }
+        } %}
+      {% else %}
+        {% set practitionerInformationStatus = {
+          tag: {
+            text: "Not yet started",
+            classes: "govuk-tag--blue"
+          }
+        } %}
+      {% endif %}
+
       {{ govukTaskList({
-        idPrefix: "essential-information-sections",
+        idPrefix: "core-sections",
         items: [
           {
             title: {
               text: "Contact information"
             },
-            href: "insolvency-practitioner-information/case-officer-full-name.html",
-            status: {
-              tag: {
-                text: "Not yet started",
-                classes: "govuk-tag--blue"
-              }
-            }
+            href: "insolvency-practitioner-information/contact-details.html",
+            status: practitionerInformationStatus
           },
           {
             title: {
               text: "Company information"
             },
-            href: "#",
+            href: "company-information/company-details.html",
             status: {
               tag: {
                 text: "Not yet started",
@@ -93,8 +135,9 @@
         ]
       }) }}
 
+    
 
-<h2 class="govuk-heading-m">Potential conduct issues</h2>
+<h2 class="govuk-heading-m">Director conduct</h2>
 
 {% set conductIssueOptions = [
   { value: "accounting-records", text: "Not maintaining accounting records" },
@@ -156,9 +199,22 @@
    {{ govukTaskList({
         idPrefix: "supporting-evidence-sections",
         items: [
+         
           {
             title: {
-              text: "Add supporting evidence"
+              text: "Report to creditors"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Other evidence"
             },
              href: "#",
             status: {
@@ -185,7 +241,7 @@
             title: {
               text: "Check and submit report"
             },
-        
+            href: "check-and-submit-report.html",
             status: {
              
                 text: "Cannot start yet"

@@ -1,0 +1,111 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – case officer details
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: '../dashboard.html',
+    navigation: [
+      {
+        href: 'dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: 'user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'javascript:window.history.back()'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form action="../report-overview" method="post" novalidate>
+<span class="govuk-caption-l">Insolvency practitioner information</span>
+<h1 class="govuk-heading-l">Appointment details</h1>
+
+<div class="govuk-form-group">
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+      In what capacity are you appointed?
+    </legend>
+
+    <div class="govuk-radios" data-module="govuk-radios">
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="capacity" name="capacity" type="radio" value="administrator">
+        <label class="govuk-label govuk-radios__label" for="capacity">Administrator</label>
+      </div>
+
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="capacity-2" name="capacity" type="radio" value="receiver-administration">
+        <label class="govuk-label govuk-radios__label" for="capacity-2">Receiver (administration)</label>
+      </div>
+
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="capacity-3" name="capacity" type="radio" value="liquidator">
+        <label class="govuk-label govuk-radios__label" for="capacity-3">Liquidator</label>
+      </div>
+    </div>
+  </fieldset>
+</div>
+
+{{ govukDateInput({
+  id: "appointment-date",
+  namePrefix: "appointmentDate",
+  fieldset: {
+    legend: {
+      text: "What date were you appointed?",
+      classes: "govuk-fieldset__legend--m"
+    }
+  },
+  hint: {
+    text: "For example, 25 9 2025"
+  },
+  items: [
+    {
+      name: "day",
+      classes: "govuk-input--width-2",
+      label: "Day",
+      value: data["appointmentDate-day"]
+    },
+    {
+      name: "month",
+      classes: "govuk-input--width-2",
+      label: "Month",
+      value: data["appointmentDate-month"]
+    },
+    {
+      name: "year",
+      classes: "govuk-input--width-4",
+      label: "Year",
+      value: data["appointmentDate-year"]
+    }
+  ]
+}) }}
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

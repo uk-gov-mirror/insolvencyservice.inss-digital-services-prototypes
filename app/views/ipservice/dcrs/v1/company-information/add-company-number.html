@@ -1,0 +1,74 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – Find company
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: '../dashboard.html',
+    navigation: [
+      {
+        href: '../dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: '../user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'javascript:window.history.back()'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Company information</span>
+      <h1 class="govuk-heading-l">Find a company</h1>
+      <p class="govuk-body">Enter the company number to search Companies House and view the company's registered details.</p>
+
+      <form action="confirm-company" method="get">
+        {{ govukInput({
+          label: {
+            text: "Company number",
+            classes: "govuk-label--m"
+          },
+          hint: {
+            text: "For example, 01234567. The company number can include letters."
+          },
+          id: "company-number",
+          name: "q",
+          value: data.companyNumber,
+          classes: "govuk-input--width-10",
+          autocomplete: "off",
+          spellcheck: false
+        }) }}
+
+        {{ govukButton({
+          text: "Find company"
+        }) }}
+
+        <p class="govuk-body">
+          <a href="add-company-details.html">Add company manually</a>
+        </p>
+      </form>
+
+ 
+    </div>
+  </div>
+{% endblock %}

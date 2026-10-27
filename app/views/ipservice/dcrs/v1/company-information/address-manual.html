@@ -1,0 +1,68 @@
+{% extends "layouts/main-forms.html" %}
+
+{% block pageTitle %}
+  Task list template – {{ serviceName }} – Name
+{% endblock %}
+
+{% block beforeContent %}
+
+  {{ govukBackLink({
+  text: "Back",
+  href: "javascript:window.history.back()"
+}) }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+  
+<form action="dates-traded" method="post" novalidate>
+<fieldset class="govuk-fieldset"><legend class="govuk-fieldset__legend govuk-fieldset__legend--l">What is the company principal address?</legend>
+    
+
+    <div class="govuk-form-group">
+  <label class="govuk-label govuk-label" for="AddressLine1">
+    Address Line 1
+  </label>
+  <input class="govuk-input govuk-input--width-30" id="AddressLine1" name="AddressLine1" type="text" spellcheck="false" value="{{ data['AddressLine1'] }}" inputmode="text">
+</div>
+    <inss-error-message>
+
+    <div class="govuk-form-group">
+  <label class="govuk-label govuk-label" for="AddressLine2">
+    Address line 2 (optional)
+  </label>
+  <input class="govuk-input govuk-input--width-30" id="AddressLine2" name="AddressLine2" type="text" spellcheck="false" value="{{ data['AddressLine2'] }} " inputmode="text">
+</div>
+    <inss-error-message>
+
+    <div class="govuk-form-group">
+  <label class="govuk-label govuk-label" for="TownCity">
+    Town or city
+  </label>
+  <input class="govuk-input govuk-input--width-20" id="TownCity" name="TownCity" type="text" spellcheck="false" value="{{ data['TownCity'] }}" inputmode="text">
+</div>
+    <inss-error-message>
+
+    <div class="govuk-form-group">
+  <label class="govuk-label govuk-label" for="County">
+    County (optional)
+  </label>
+  <input class="govuk-input govuk-input--width-20" id="County" name="County" type="text" spellcheck="false" value="{{ data['County'] }}" inputmode="text">
+</div>
+    <inss-error-message>
+
+    <div class="govuk-form-group">
+  <label class="govuk-label govuk-label" for="Postcode">
+    Postcode
+  </label>
+  <input class="govuk-input govuk-input--width-10" id="Postcode" name="Postcode" type="text" spellcheck="false" value="{{ data['Postcode'] }}" inputmode="text">
+</div>
+
+<button class="govuk-button" data-module="govuk-button">
+Continue
+</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – Remove bank account
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: '../dashboard.html',
+    navigation: [
+      {
+        href: '../dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: '../user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'company-bank-accounts.html'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Company information for {{ data.companyName }}</span>
+      <h1 class="govuk-heading-l">Remove bank account</h1>
+      {% set companyBankAccounts = data.companyBankAccounts or [] %}
+      {% set selectedBankAccount = companyBankAccounts[data.removeCompanyBankAccountIndex] %}
+      {% if selectedBankAccount %}
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Name of bank</dt>
+            <dd class="govuk-summary-list__value">{{ selectedBankAccount.companyBankProviderName | default('Not provided', true) }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Name on the account</dt>
+            <dd class="govuk-summary-list__value">{{ selectedBankAccount.companyBankAccountName | default('Not provided', true) }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Sort code</dt>
+            <dd class="govuk-summary-list__value">{{ selectedBankAccount.companyBankSortCode | default('Not provided', true) }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Account number</dt>
+            <dd class="govuk-summary-list__value">{{ selectedBankAccount.companyBankAccountNumber | default('Not provided', true) }}</dd>
+          </div>
+          {% if selectedBankAccount.companyBuildingSocietyRollNumber %}
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Building society roll number</dt>
+              <dd class="govuk-summary-list__value">{{ selectedBankAccount.companyBuildingSocietyRollNumber }}</dd>
+            </div>
+          {% endif %}
+        </dl>
+      {% endif %}
+
+      <form action="/ipservice/dcrs/v2/company-information/remove-bank-account-answer" method="post" novalidate>
+        {{ govukRadios({
+          name: "removeCompanyBankAccount",
+          value: data.removeCompanyBankAccount,
+          fieldset: {
+            legend: {
+              text: "Do you want to remove this bank account?",
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: "yes",
+              text: "Yes"
+            },
+            {
+              value: "no",
+              text: "No"
+            }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

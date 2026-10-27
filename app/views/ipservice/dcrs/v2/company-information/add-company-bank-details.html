@@ -1,0 +1,133 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – Add company bank details
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: '../dashboard.html',
+    navigation: [
+      {
+        href: '../dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: '../user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'javascript:window.history.back()'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Company information for {{ data.companyName }}</span>
+
+        <h1 class="govuk-heading-l">Company bank details</h1>
+ 
+      <p class="govuk-body">Enter the details of a bank or building society account held by the company.</p>
+
+      <form action="/ipservice/dcrs/v2/company-information/add-company-bank-details" method="post" novalidate>
+        {{ govukInput({
+          label: {
+            text: "Name of bank"
+          },
+          id: "bank-provider-name",
+          name: "companyBankProviderName",
+          value: data.companyBankProviderName,
+          autocomplete: "organization",
+          spellcheck: false
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Name on the account"
+          },
+          id: "bank-account-name",
+          name: "companyBankAccountName",
+          value: data.companyBankAccountName,
+          autocomplete: "name",
+          spellcheck: false
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Sort code"
+          },
+          hint: {
+            text: "Must be 6 digits, for example 00 00 00"
+          },
+          id: "bank-sort-code",
+          name: "companyBankSortCode",
+          value: data.companyBankSortCode,
+          classes: "govuk-input--width-5",
+          inputmode: "numeric",
+          autocomplete: "off",
+          spellcheck: false
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Account number"
+          },
+          hint: {
+            text: "Must be 8 digits"
+          },
+          id: "bank-account-number",
+          name: "companyBankAccountNumber",
+          value: data.companyBankAccountNumber,
+          classes: "govuk-input--width-10",
+          inputmode: "numeric",
+          autocomplete: "off",
+          spellcheck: false
+        }) }}
+
+        {{ govukRadios({
+          name: "holdsUnmarkedBankStatements",
+          value: data.holdsUnmarkedBankStatements,
+          fieldset: {
+            legend: {
+              text: "Do you hold unmarked copies of the bank statements for this account for the last 12 months of trading?",
+              classes: "govuk-fieldset__legend--s"
+            }
+          },
+          items: [
+            {
+              value: "Yes",
+              text: "Yes"
+            },
+            {
+              value: "No",
+              text: "No"
+            }
+          ]
+        }) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+          <button type="submit" formaction="/ipservice/dcrs/v2/company-information/save-and-return" class="govuk-button govuk-button--secondary" data-module="govuk-button">Save and return to overview</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – Company directors
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: '../dashboard.html',
+    navigation: [
+      {
+        href: '../dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: '../user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: '../report-overview.html'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <span class="govuk-caption-l">Director information for {{ data.companyName }}</span>
+      <h1 class="govuk-heading-l">Company directors</h1>
+      <h2 class="govuk-heading-m">Company directors listed on companies House</h2>
+    <p>Showing directors listed three years before the company entered insolvency</p>
+      {% set companiesHouseDirectors = data.companyDirectors or [
+        {
+          title: 'Ms',
+          fullName: 'Amelia Example',
+          dateOfBirth: '14 March 1980',
+          address: '1 Example Street, Example Town, EX4 5PL',
+          appointedDate: '6 September 2020',
+          resignedDate: '',
+          email: '',
+          phone: ''
+        },
+        {
+          title: 'Mr',
+          fullName: 'Oliver Sample',
+          dateOfBirth: '22 November 1975',
+          address: '25 Market Road, Example Town, EX4 2AB',
+          appointedDate: '12 June 2018',
+          resignedDate: '30 April 2022',
+          email: '',
+          phone: ''
+        }
+      ] %}
+
+      {% set additionalDirectors = data.addedCompanyDirectors or [] %}
+      {% set directors = companiesHouseDirectors.concat(additionalDirectors) %}
+      {% for director in directors %}
+        <div class="govuk-summary-card">
+          <div class="govuk-summary-card__title-wrapper">
+            <h2 class="govuk-summary-card__title">Director {{ loop.index }}</h2>
+          </div>
+          <div class="govuk-summary-card__content">
+            <dl class="govuk-summary-list">
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Title</dt>
+                <dd class="govuk-summary-list__value">{{ director.title | default('Not provided', true) }}</dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Full name</dt>
+                <dd class="govuk-summary-list__value">{{ director.fullName | default(director.name | default('Not provided', true), true) }}</dd>
+              </div>
+              {% if director.companyNumber %}
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Company number</dt>
+                  <dd class="govuk-summary-list__value">{{ director.companyNumber }}</dd>
+                </div>
+              {% endif %}
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Date of birth</dt>
+                <dd class="govuk-summary-list__value">
+                  {% if director.dateOfBirth %}
+                    {{ director.dateOfBirth }}
+                  {% elif director.date_of_birth.month and director.date_of_birth.year %}
+                    {{ director.date_of_birth.month }}/{{ director.date_of_birth.year }}
+                  {% else %}
+                    Not provided
+                  {% endif %}
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Address</dt>
+                <dd class="govuk-summary-list__value">
+                  {% if director.address is mapping %}
+                    {{ director.address.address_line_1 }}{% if director.address.address_line_2 %}<br>{{ director.address.address_line_2 }}{% endif %}{% if director.address.locality %}<br>{{ director.address.locality }}{% endif %}{% if director.address.region %}<br>{{ director.address.region }}{% endif %}{% if director.address.postal_code %}<br>{{ director.address.postal_code }}{% endif %}{% if director.address.country %}<br>{{ director.address.country }}{% endif %}
+                  {% elif director.address or director.serviceAddress %}
+                    {{ director.address | default(director.serviceAddress, true) }}
+                  {% else %}
+                    Not provided
+                  {% endif %}
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Appointed date</dt>
+                <dd class="govuk-summary-list__value">{{ director.appointedDate | default(director.appointed_on | default('Not provided', true), true) }}</dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Resigned date</dt>
+                <dd class="govuk-summary-list__value">{{ director.resignedDate | default(director.resigned_on | default('Not provided', true), true) }}</dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Email address</dt>
+                <dd class="govuk-summary-list__value">{{ director.email | default(director.emailAddress | default('Not provided', true), true) }}</dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Phone number</dt>
+                <dd class="govuk-summary-list__value">{{ director.phone | default(director.phoneNumber | default('Not provided', true), true) }}</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      {% else %}
+        <p class="govuk-body">No director details are available.</p>
+      {% endfor %}
+     <h2 class="govuk-heading-m">Company directors not listed on companies house</h2>
+
+        <p class="govuk-body">Add details of any company director who is not listed at Companies House in the 3 years before the company entered insolvency.</p>
+
+        <form action="/ipservice/dcrs/v2/director-information/company-directors-answer" method="post" novalidate>
+          {{ govukRadios({
+            name: "addAnotherDirector",
+            value: data.addAnotherDirector,
+            fieldset: {
+              legend: {
+                text: "Do you want to add a director?",
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            items: [
+              {
+                value: "yes",
+                text: "Yes"
+              },
+              {
+                value: "no",
+                text: "No"
+              }
+            ]
+          }) }}
+
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+        </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – Add company bank details
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: '../dashboard.html',
+    navigation: [
+      {
+        href: '../dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: '../user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'javascript:window.history.back()'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Company information</span>
+      <h1 class="govuk-heading-l">Add company bank details</h1>
+      <p class="govuk-body">Enter the details of a bank or building society account held by the company.</p>
+
+      <form action="company-bank-accounts" method="post" novalidate>
+        {{ govukInput({
+          label: {
+            text: "Name of bank or building society"
+          },
+          id: "bank-provider-name",
+          name: "companyBankProviderName",
+          value: data.companyBankProviderName,
+          autocomplete: "organization",
+          spellcheck: false
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Name on the account"
+          },
+          id: "bank-account-name",
+          name: "companyBankAccountName",
+          value: data.companyBankAccountName,
+          autocomplete: "name",
+          spellcheck: false
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Sort code"
+          },
+          hint: {
+            text: "Must be 6 digits, for example 00 00 00"
+          },
+          id: "bank-sort-code",
+          name: "companyBankSortCode",
+          value: data.companyBankSortCode,
+          classes: "govuk-input--width-5",
+          inputmode: "numeric",
+          autocomplete: "off",
+          spellcheck: false
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Account number"
+          },
+          hint: {
+            text: "Must be 8 digits"
+          },
+          id: "bank-account-number",
+          name: "companyBankAccountNumber",
+          value: data.companyBankAccountNumber,
+          classes: "govuk-input--width-10",
+          inputmode: "numeric",
+          autocomplete: "off",
+          spellcheck: false
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Building society roll number (if applicable)"
+          },
+          hint: {
+            text: "You can find this on your building society passbook or statement."
+          },
+          id: "building-society-roll-number",
+          name: "companyBuildingSocietyRollNumber",
+          value: data.companyBuildingSocietyRollNumber,
+          autocomplete: "off",
+          spellcheck: false
+        }) }}
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

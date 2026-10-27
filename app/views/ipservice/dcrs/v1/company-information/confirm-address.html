@@ -1,0 +1,86 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – Confirm principal trading address
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: '../dashboard.html',
+    navigation: [
+      {
+        href: '../dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: '../user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'javascript:window.history.back()'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Company information</span>
+      <h1 class="govuk-heading-l">Company address</h1>
+      {% set registeredOfficeAddressLine1 = data.registeredOfficeAddressLine1 | default('1 Example Street', true) %}
+      {% set registeredOfficeAddressLine2 = data.registeredOfficeAddressLine2 %}
+      {% set registeredOfficeTown = data.registeredOfficeTown | default('Example Town', true) %}
+      {% set registeredOfficeCounty = data.registeredOfficeCounty %}
+      {% set registeredOfficePostcode = data.registeredOfficePostcode | default('EX4 5PL', true) %}
+
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Registered office address</dt>
+          <dd class="govuk-summary-list__value">
+            {{ registeredOfficeAddressLine1 }}{% if registeredOfficeAddressLine2 %}<br>{{ registeredOfficeAddressLine2 }}{% endif %}<br>{{ registeredOfficeTown }}{% if registeredOfficeCounty %}<br>{{ registeredOfficeCounty }}{% endif %}<br>{{ registeredOfficePostcode }}
+          </dd>
+        </div>
+      </dl>
+
+      <form action="/ipservice/dcrs/v1/company-information/confirm-address" method="post" novalidate>
+        {{ govukRadios({
+          name: "principalTradingAddress",
+          value: data.principalTradingAddress,
+          fieldset: {
+            legend: {
+              text: "Is this the principal trading address of the company?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: "yes",
+              text: "Yes"
+            },
+            {
+              value: "no",
+              text: "No"
+            }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

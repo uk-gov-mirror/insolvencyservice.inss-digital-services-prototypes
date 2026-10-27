@@ -1,0 +1,232 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – Director details
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block header %}
+  {{ govukHeader() }}
+  {{ govukServiceNavigation({
+    serviceName: 'Director conduct report service',
+    serviceUrl: '../dashboard.html',
+    navigation: [
+      {
+        href: '../dashboard.html',
+        text: 'Dashboard'
+      },
+      {
+        href: '../user-management/settings.html',
+        text: 'Notifications (3)'
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: 'Back',
+    href: 'type-of-director-guard.html'
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Director information for {{ data.companyName }}</span>
+      <h1 class="govuk-heading-l">Director details</h1>
+
+      <form action="/ipservice/dcrs/v2/director-information/director-details-answer" method="post" novalidate>
+        <input type="hidden" name="directorType" value="{{ data.directorType }}">
+
+        {% if data.directorType == 'corporate' %}
+          {{ govukInput({
+            label: {
+              text: "Corporate director name"
+            },
+            id: "corporate-director-name",
+            name: "directorOrganisationName",
+            value: data.directorOrganisationName,
+            autocomplete: "organization",
+            spellcheck: false
+          }) }}
+
+          {{ govukInput({
+            label: {
+              text: "Company number"
+            },
+            id: "corporate-director-company-number",
+            name: "directorOrganisationNumber",
+            value: data.directorOrganisationNumber,
+            autocomplete: "off",
+            spellcheck: false
+          }) }}
+        {% else %}
+          {{ govukInput({
+            label: {
+              text: "Title"
+            },
+            id: "director-title",
+            name: "directorTitle",
+            value: data.directorTitle,
+            classes: "govuk-input--width-5",
+            autocomplete: "honorific-prefix",
+            spellcheck: false
+          }) }}
+
+          {{ govukInput({
+            label: {
+              text: "Full name"
+            },
+            id: "director-full-name",
+            name: "directorFullName",
+            value: data.directorFullName,
+            autocomplete: "name",
+            spellcheck: false
+          }) }}
+
+          {{ govukDateInput({
+            id: "director-date-of-birth",
+            namePrefix: "directorDateOfBirth",
+            fieldset: {
+              legend: {
+                text: "Date of birth",
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            hint: {
+              text: "For example, 31 3 1980"
+            },
+            items: [
+              { name: "day", classes: "govuk-input--width-2", label: "Day", value: data['directorDateOfBirth-day'] },
+              { name: "month", classes: "govuk-input--width-2", label: "Month", value: data['directorDateOfBirth-month'] },
+              { name: "year", classes: "govuk-input--width-4", label: "Year", value: data['directorDateOfBirth-year'] }
+            ]
+          }) }}
+        {% endif %}
+
+        <h2 class="govuk-heading-m">Address</h2>
+        {{ govukInput({
+          label: {
+            text: "Address line 1"
+          },
+          id: "director-address-line-1",
+          name: "directorAddressLine1",
+          value: data.directorAddressLine1,
+          autocomplete: "address-line1",
+          spellcheck: false
+        }) }}
+        {{ govukInput({
+          label: {
+            text: "Address line 2 (optional)"
+          },
+          id: "director-address-line-2",
+          name: "directorAddressLine2",
+          value: data.directorAddressLine2,
+          autocomplete: "address-line2",
+          spellcheck: false
+        }) }}
+        {{ govukInput({
+          label: {
+            text: "Town or city"
+          },
+          id: "director-address-town",
+          name: "directorAddressTown",
+          value: data.directorAddressTown,
+          autocomplete: "address-level2",
+          spellcheck: false
+        }) }}
+        {{ govukInput({
+          label: {
+            text: "Postcode"
+          },
+          id: "director-address-postcode",
+          name: "directorAddressPostcode",
+          value: data.directorAddressPostcode,
+          autocomplete: "postal-code",
+          spellcheck: false
+        }) }}
+
+        <h2 class="govuk-heading-m">Contact details</h2>
+        {{ govukRadios({
+          idPrefix: "director-has-email-address",
+          name: "directorHasEmailAddress",
+          value: data.directorHasEmailAddress,
+          fieldset: {
+            legend: {
+              text: "Have you got the director’s email address?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: "yes",
+              text: "Yes",
+              conditional: {
+                html: govukInput({
+                  label: {
+                    text: "Director’s email address"
+                  },
+                  id: "director-email",
+                  name: "directorEmail",
+                  type: "email",
+                  value: data.directorEmail,
+                  autocomplete: "email",
+                  spellcheck: false
+                })
+              }
+            },
+            {
+              value: "no",
+              text: "No"
+            }
+          ]
+        }) }}
+        {{ govukRadios({
+          idPrefix: "director-has-phone-number",
+          name: "directorHasPhoneNumber",
+          value: data.directorHasPhoneNumber,
+          fieldset: {
+            legend: {
+              text: "Have you got the director’s phone number?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: "yes",
+              text: "Yes",
+              conditional: {
+                html: govukInput({
+                  label: {
+                    text: "Director’s phone number"
+                  },
+                  id: "director-phone",
+                  name: "directorPhone",
+                  type: "tel",
+                  value: data.directorPhone,
+                  autocomplete: "tel",
+                  spellcheck: false
+                })
+              }
+            },
+            {
+              value: "no",
+              text: "No"
+            }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Save director details"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

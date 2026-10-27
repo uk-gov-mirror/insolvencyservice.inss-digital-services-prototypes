@@ -1,0 +1,290 @@
+{% extends "layouts/main.html" %}
+
+{% set serviceName = 'Director conduct report service' %}
+
+{% block pageTitle %}
+  {{ serviceName }} – dashboard
+{% endblock %}
+
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% block header %}
+  {{ govukHeader() }}
+{{ govukServiceNavigation({
+  serviceName: 'Director conduct report service',
+  serviceUrl: "dashboard.html",
+  navigation: [
+    {
+      href: "dashboard.html",
+      text: "Dashboard"
+    },
+    {
+      href: "user-management/settings.html",
+      text: "Notifications (3)"
+    },
+    {
+      href: "user-management/settings.html",
+      text: "User management"
+    }
+  ]
+}) }}
+{% endblock %}
+
+{% block content %}
+   <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+  <h1 class="govuk-heading-l">Overview</h1>
+    {% set companyName = data.companyName | default('Company 1 Ltd', true) %}
+      {% set companyNumber = data.companyNumber | default(data.q | default('12345678', true), true) %}
+      {% set incorporationDay = data['dateOfIncorporation-day'] | default('12', true) %}
+
+      {% set companyName = data.companyName | default('Company 1 Ltd', true) %}
+      {% set companyNumber = data.companyNumber | default(data.q | default('12345678', true), true) %}
+      {% set caseType = data.caseType | default('Administration', true) %}
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Company name</dt>
+          <dd class="govuk-summary-list__value">{{ companyName }}</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Company number</dt>
+          <dd class="govuk-summary-list__value">{{ companyNumber }}</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Type of case</dt>
+          <dd class="govuk-summary-list__value">{{ caseType }}</dd>
+        </div>
+      </dl>
+
+        <h2 class="govuk-heading-m">Case details</h2>
+      {% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+
+      {% set contactDetailsComplete = data.caseOfficerFullName and data.caseOfficerEmail and data.caseOfficerPhoneNumber %}
+      {% set contactDetailsStarted = data.caseOfficerFullName or data.caseOfficerEmail or data.caseOfficerPhoneNumber %}
+      {% set appointmentDetailsComplete = data.capacity and data["appointmentDate-day"] and data["appointmentDate-month"] and data["appointmentDate-year"] %}
+      {% if contactDetailsComplete %}
+        {% set practitionerInformationStatus = { text: "Completed" } %}
+      {% elif contactDetailsStarted %}
+        {% set practitionerInformationStatus = {
+          tag: {
+            text: "In progress",
+            classes: "govuk-tag--light-blue"
+          }
+        } %}
+      {% else %}
+        {% set practitionerInformationStatus = {
+          tag: {
+            text: "Not yet started",
+            classes: "govuk-tag--blue"
+          }
+        } %}
+      {% endif %}
+
+      {% set companyBankAccounts = data.companyBankAccounts or [] %}
+      {% set companyTradingNameAnswer = data.companyUsesAlternativeTradingName | default('', true) | lower %}
+      {% set companyBankingAnswer = data.holdsCompanyBankingDetails | default('', true) | lower %}
+      {% set addAnotherBankAccountAnswer = data.addAnotherCompanyBankAccount | default('', true) | lower %}
+      {% set electronicRecordsAnswer = data.holdsElectronicRecords | default('', true) | lower %}
+      {% set electronicRecordsAvailableAnswer = data.electronicRecordsAvailable | default('', true) | lower %}
+      {% set electronicRecordsObtainedAnswer = data.electronicRecordsObtained | default('', true) | lower %}
+      {% set companyAlternativeTradingNameComplete = companyTradingNameAnswer == 'no' or (companyTradingNameAnswer == 'yes' and data.alternativeTradingName) %}
+      {% set companyBankingComplete = companyBankingAnswer == 'no' or (companyBankingAnswer == 'yes' and companyBankAccounts.length and addAnotherBankAccountAnswer == 'no') %}
+      {% set companyElectronicRecordsComplete = electronicRecordsAnswer == 'no' or (electronicRecordsAnswer == 'yes' and (electronicRecordsAvailableAnswer == 'no' or (electronicRecordsAvailableAnswer == 'yes' and (electronicRecordsObtainedAnswer == 'yes' or electronicRecordsObtainedAnswer == 'no')))) %}
+      {% set companyInformationStarted =
+        companyTradingNameAnswer or
+        data.alternativeTradingName or
+        companyBankingAnswer or
+        companyBankAccounts.length or
+        addAnotherBankAccountAnswer or
+        electronicRecordsAnswer or
+        electronicRecordsAvailableAnswer or
+        electronicRecordsObtainedAnswer
+      %}
+      {% set companyInformationComplete =
+        companyTradingNameAnswer in ['yes', 'no'] and
+        companyAlternativeTradingNameComplete and
+        companyBankingAnswer in ['yes', 'no'] and
+        companyBankingComplete and
+        electronicRecordsAnswer in ['yes', 'no'] and
+        companyElectronicRecordsComplete
+      %}
+      {% if companyInformationComplete %}
+        {% set companyInformationStatus = { text: "Completed" } %}
+      {% elif companyInformationStarted %}
+        {% set companyInformationStatus = {
+          tag: {
+            text: "In progress",
+            classes: "govuk-tag--light-blue"
+          }
+        } %}
+      {% else %}
+        {% set companyInformationStatus = {
+          tag: {
+            text: "Not yet started",
+            classes: "govuk-tag--blue"
+          }
+        } %}
+      {% endif %}
+
+      {{ govukTaskList({
+        idPrefix: "core-sections",
+        items: [
+          {
+            title: {
+              text: "Contact information"
+            },
+            href: "contact-information/contact-details.html",
+            status: practitionerInformationStatus
+          },
+          {
+            title: {
+              text: "Company information"
+            },
+            href: "company-information/trading-name.html",
+            status: companyInformationStatus
+          },
+          {
+            title: {
+              text: "Director information"
+            },
+            href: "director-information/company-directors.html",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Insolvency information"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          }
+        
+        ]
+      }) }}
+
+    
+
+<h2 class="govuk-heading-m">Director conduct</h2>
+
+{% set conductIssueOptions = [
+  { value: "accounting-records", text: "Not maintaining accounting records" },
+  { value: "insolvent-trading", text: "Insolvent trading" },
+  { value: "detrimental-transactions", text: "Detrimental transactions" },
+  { value: "crown-misconduct", text: "Crown misconduct" },
+  { value: "undervalue-asset-disposals", text: "Undervalue asset disposals" },
+  { value: "phoenix-successor-trading", text: "Phoenix/successor trading" },
+  { value: "failure-to-provide-goods-services", text: "Failure to provide goods/services" },
+  { value: "covid-financial-support-misconduct", text: "Covid financial support misconduct" },
+  { value: "acting-whilst-disqualified-or-bankrupt", text: "Acting as a director whilst disqualified or bankrupt" },
+  { value: "s216-breaches", text: "S216 breaches" },
+  { value: "other-investigations-or-potential-criminality", text: "Other investigations or potential criminality" }
+] %}
+{% set selectedConductIssues = data.conductIssues or [] %}
+{% if selectedConductIssues | length %}
+  {% set conductSelectionStatus = { text: "Completed" } %}
+{% else %}
+  {% set conductSelectionStatus = {
+    tag: {
+      text: "Not yet started",
+      classes: "govuk-tag--blue"
+    }
+  } %}
+{% endif %}
+{% set conductTaskItems = [
+  {
+    title: {
+      text: "Potential conduct issues"
+    },
+    href: "evidence-of-director-misconduct.html",
+    status: conductSelectionStatus
+  }
+] %}
+
+{% for issue in conductIssueOptions %}
+  {% if issue.value in selectedConductIssues %}
+    {% set conductTaskItems = conductTaskItems.concat([{
+      title: {
+        text: issue.text
+      },
+      href: "#",
+      status: {
+        tag: {
+          text: "Not yet started",
+          classes: "govuk-tag--blue"
+        }
+      }
+    }]) %}
+  {% endif %}
+{% endfor %}
+
+{{ govukTaskList({
+  idPrefix: "conduct-issues",
+  items: conductTaskItems
+}) }}
+
+ <h2 class="govuk-heading-m">Supporting evidence</h2>
+   {{ govukTaskList({
+        idPrefix: "supporting-evidence-sections",
+        items: [
+         
+          {
+            title: {
+              text: "Report to creditors"
+            },
+            href: "#",
+            status: {
+              tag: {
+                text: "Not yet started",
+                classes: "govuk-tag--blue"
+              }
+            }
+          },
+          {
+            title: {
+              text: "Other evidence"
+            },
+             href: "#",
+            status: {
+             
+                 tag: {
+          text: "Not yet started",
+          classes: "govuk-tag--blue"
+        }
+           
+            }
+          }
+        ]
+      }) }}
+
+
+
+
+              <h2 class="govuk-heading-m">Submit report</h2>
+        
+      {{ govukTaskList({
+        idPrefix: "essential-information-sections",
+        items: [
+          {
+            title: {
+              text: "Check and submit report"
+            },
+            href: "check-and-submit-report.html",
+            status: {
+             
+                text: "Cannot start yet"
+           
+            }
+          }
+        ]
+      }) }}
+
+    </div>
+{% endblock %}

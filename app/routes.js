@@ -9,10 +9,260 @@ const router = govukPrototypeKit.requests.setupRouter()
 const customerFormsV2Routes = require('./views/customer-forms/v2/routes')
 const individualInsolvencyRegisterV4Routes = require('./views/individual-insolvency-register/v4/routes')
 
+router.use(function (req, res, next) {
+  req.session.data = req.session.data || {}
+  req.session.data.companyName = req.session.data.companyName || 'Company 1 Ltd'
+  req.session.data.companyNumber = req.session.data.companyNumber || '12345678'
+  next()
+})
+
 router.use(customerFormsV2Routes)
 router.use(individualInsolvencyRegisterV4Routes)
 
 // Add your routes here
+
+router.post('/ipservice/dcrs/v1/company-information/confirm-company', function (req, res) {
+  if (req.body.correctCompany === 'yes') {
+    return res.redirect('/ipservice/dcrs/v1/company-information/company-details.html')
+  }
+
+  return res.redirect('/ipservice/dcrs/v1/company-information/add-company-number.html')
+})
+
+router.post('/ipservice/dcrs/v2/company-information/confirm-company', function (req, res) {
+  if (req.body.correctCompany === 'yes') {
+    return res.redirect('/ipservice/dcrs/v2/company-information/company-details.html')
+  }
+
+  return res.redirect('/ipservice/dcrs/v2/company-information/add-company-number.html')
+})
+
+router.post('/ipservice/dcrs/v2/director-information/company-directors-answer', function (req, res) {
+  req.session.data.addAnotherDirector = req.body.addAnotherDirector
+  if (req.body.addAnotherDirector === 'yes') {
+    return res.redirect('/ipservice/dcrs/v2/director-information/type-of-director-guard.html')
+  }
+  return res.redirect('/ipservice/dcrs/v2/report-overview.html')
+})
+
+router.post('/ipservice/dcrs/v2/director-information/type-of-director-answer', function (req, res) {
+  req.session.data.directorType = req.body.directorType
+  return res.redirect('/ipservice/dcrs/v2/director-information/director-details.html')
+})
+
+router.post('/ipservice/dcrs/v2/director-information/director-details-answer', function (req, res) {
+  const directorType = req.session.data.directorType || req.body.directorType
+  const fullName = directorType === 'corporate'
+    ? req.body.directorOrganisationName
+    : req.body.directorFullName
+  req.session.data.addedCompanyDirectors = req.session.data.addedCompanyDirectors || []
+  req.session.data.addedCompanyDirectors.push({
+    type: directorType,
+    title: directorType === 'individual' ? req.body.directorTitle : 'Corporate',
+    fullName,
+    companyNumber: req.body.directorOrganisationNumber,
+    dateOfBirth: [req.body['directorDateOfBirth-day'], req.body['directorDateOfBirth-month'], req.body['directorDateOfBirth-year']].filter(Boolean).join('/'),
+    address: [
+      req.body.directorAddressLine1,
+      req.body.directorAddressLine2,
+      req.body.directorAddressTown,
+      req.body.directorAddressPostcode
+    ].filter(Boolean).join(', '),
+    hasEmailAddress: req.body.directorHasEmailAddress,
+    email: req.body.directorEmail,
+    hasPhoneNumber: req.body.directorHasPhoneNumber,
+    phone: req.body.directorPhone
+  })
+
+  return res.redirect('/ipservice/dcrs/v2/director-information/company-directors.html')
+})
+
+router.post('/ipservice/dcrs/v2/company-information/save-and-return', function (req, res) {
+  Object.assign(req.session.data, req.body)
+
+  if (req.session.data.editingCompanyBankAccount) {
+    const editIndex = Number.parseInt(req.session.data.companyBankAccountEditIndex, 10)
+    const accounts = req.session.data.companyBankAccounts || []
+
+    if (Number.isInteger(editIndex) && accounts[editIndex]) {
+      accounts[editIndex] = {
+        companyBankProviderName: req.body.companyBankProviderName,
+        companyBankAccountName: req.body.companyBankAccountName,
+        companyBankSortCode: req.body.companyBankSortCode,
+        companyBankAccountNumber: req.body.companyBankAccountNumber,
+        companyBuildingSocietyRollNumber: req.body.companyBuildingSocietyRollNumber,
+        holdsUnmarkedBankStatements: req.body.holdsUnmarkedBankStatements,
+        companyBankAccountAnalysisCompleted: req.body.companyBankAccountAnalysisCompleted
+      }
+    }
+
+    delete req.session.data.companyBankAccountEditIndex
+    delete req.session.data.editingCompanyBankAccount
+  }
+
+  return res.redirect('/ipservice/dcrs/v2/report-overview.html')
+})
+
+router.post('/ipservice/dcrs/v1/company-information/confirm-address', function (req, res) {
+  if (req.body.principalTradingAddress === 'yes') {
+    return res.redirect('/ipservice/dcrs/v1/company-information/dates-traded.html')
+  }
+
+  return res.redirect('/ipservice/dcrs/v1/company-information/address-manual.html')
+})
+
+router.post('/ipservice/dcrs/v2/company-information/confirm-address', function (req, res) {
+  if (req.body.principalTradingAddress === 'yes') {
+    return res.redirect('/ipservice/dcrs/v2/company-information/dates-traded.html')
+  }
+
+  return res.redirect('/ipservice/dcrs/v2/company-information/address-manual.html')
+})
+
+router.post('/ipservice/dcrs/v1/company-information/bank-detail-guard-answer', function (req, res) {
+  if (req.body.holdsCompanyBankingDetails === 'Yes') {
+    return res.redirect('/ipservice/dcrs/v1/company-information/add-company-bank-details.html')
+  }
+
+  return res.redirect('/ipservice/dcrs/v1/report-overview.html')
+})
+
+router.post('/ipservice/dcrs/v2/company-information/bank-detail-guard-answer', function (req, res) {
+  if (req.body.holdsCompanyBankingDetails === 'yes') {
+    return res.redirect('/ipservice/dcrs/v2/company-information/company-bank-accounts.html')
+  }
+
+  return res.redirect('/ipservice/dcrs/v2/company-information/electronic-records.html')
+})
+
+router.post('/ipservice/dcrs/v2/company-information/electronic-records-answer', function (req, res) {
+  if (req.body.holdsElectronicRecords === 'yes') {
+    return res.redirect('/ipservice/dcrs/v2/company-information/electronic-records-available-guard.html')
+  }
+
+  return res.redirect('/ipservice/dcrs/v2/report-overview.html')
+})
+
+router.post('/ipservice/dcrs/v2/company-information/electronic-records-available-answer', function (req, res) {
+  if (req.body.electronicRecordsAvailable === 'yes') {
+    return res.redirect('/ipservice/dcrs/v2/company-information/electronic-records-obtain.html')
+  }
+
+  return res.redirect('/ipservice/dcrs/v2/report-overview.html')
+})
+
+router.post('/ipservice/dcrs/v2/company-information/electronic-records-obtain-answer', function (req, res) {
+  return res.redirect('/ipservice/dcrs/v2/report-overview.html')
+})
+
+router.post('/ipservice/dcrs/v1/company-information/company-bank-accounts-answer', function (req, res) {
+  if (req.body.addAnotherCompanyBankAccount === 'yes') {
+    return res.redirect('/ipservice/dcrs/v1/company-information/add-company-bank-details.html')
+  }
+
+  return res.redirect('/ipservice/dcrs/v1/report-overview.html')
+})
+
+router.post('/ipservice/dcrs/v2/company-information/company-bank-accounts-answer', function (req, res) {
+  if (req.body.addAnotherCompanyBankAccount === 'yes') {
+    req.session.data.companyBankProviderName = ''
+    req.session.data.companyBankAccountName = ''
+    req.session.data.companyBankSortCode = ''
+    req.session.data.companyBankAccountNumber = ''
+    req.session.data.companyBuildingSocietyRollNumber = ''
+    return res.redirect('/ipservice/dcrs/v2/company-information/add-company-bank-details.html')
+  }
+
+  return res.redirect('/ipservice/dcrs/v2/company-information/bank-account-analysis.html')
+})
+
+router.get('/ipservice/dcrs/v2/company-information/edit-company-bank-account', function (req, res) {
+  const index = Number.parseInt(req.query.index, 10)
+  const accounts = req.session.data.companyBankAccounts || []
+  const account = accounts[index]
+
+  if (!Number.isInteger(index) || !account) {
+    return res.redirect('/ipservice/dcrs/v2/company-information/company-bank-accounts.html')
+  }
+
+  req.session.data.companyBankAccountEditIndex = index
+  req.session.data.editingCompanyBankAccount = true
+  req.session.data.companyBankProviderName = account.companyBankProviderName || ''
+  req.session.data.companyBankAccountName = account.companyBankAccountName || ''
+  req.session.data.companyBankSortCode = account.companyBankSortCode || ''
+  req.session.data.companyBankAccountNumber = account.companyBankAccountNumber || ''
+  req.session.data.companyBuildingSocietyRollNumber = account.companyBuildingSocietyRollNumber || ''
+  req.session.data.holdsUnmarkedBankStatements = account.holdsUnmarkedBankStatements || ''
+  req.session.data.companyBankAccountAnalysisCompleted = account.companyBankAccountAnalysisCompleted || ''
+
+  return res.redirect('/ipservice/dcrs/v2/company-information/add-company-bank-details.html')
+})
+
+router.get('/ipservice/dcrs/v2/company-information/prepare-remove-bank-account', function (req, res) {
+  const index = Number.parseInt(req.query.index, 10)
+  const accounts = req.session.data.companyBankAccounts || []
+
+  if (!Number.isInteger(index) || index < 0 || !accounts[index]) {
+    return res.redirect('/ipservice/dcrs/v2/company-information/company-bank-accounts.html')
+  }
+
+  req.session.data.removeCompanyBankAccountIndex = index
+  return res.redirect('/ipservice/dcrs/v2/company-information/remove-bank-account.html')
+})
+
+router.post('/ipservice/dcrs/v2/company-information/remove-bank-account-answer', function (req, res) {
+  const index = Number.parseInt(req.session.data.removeCompanyBankAccountIndex, 10)
+  const accounts = req.session.data.companyBankAccounts || []
+
+  if (req.body.removeCompanyBankAccount === 'yes' && Number.isInteger(index) && index >= 0 && accounts[index]) {
+    accounts.splice(index, 1)
+  }
+
+  delete req.session.data.removeCompanyBankAccountIndex
+  return res.redirect('/ipservice/dcrs/v2/company-information/company-bank-accounts.html')
+})
+
+function saveCompanyBankAccount(req, account) {
+  req.session.data.companyBankAccounts = req.session.data.companyBankAccounts || []
+
+  const editIndex = Number.parseInt(req.session.data.companyBankAccountEditIndex, 10)
+  if (req.session.data.editingCompanyBankAccount && Number.isInteger(editIndex) && req.session.data.companyBankAccounts[editIndex]) {
+    req.session.data.companyBankAccounts[editIndex] = account
+  } else {
+    req.session.data.companyBankAccounts.push(account)
+  }
+
+  delete req.session.data.companyBankAccountEditIndex
+  delete req.session.data.editingCompanyBankAccount
+
+  req.session.data.companyBankProviderName = ''
+  req.session.data.companyBankAccountName = ''
+  req.session.data.companyBankSortCode = ''
+  req.session.data.companyBankAccountNumber = ''
+  req.session.data.companyBuildingSocietyRollNumber = ''
+  req.session.data.holdsUnmarkedBankStatements = ''
+  req.session.data.companyBankAccountAnalysisCompleted = ''
+}
+
+router.post('/ipservice/dcrs/v2/company-information/add-company-bank-details', function (req, res) {
+  const account = {
+    companyBankProviderName: req.body.companyBankProviderName,
+    companyBankAccountName: req.body.companyBankAccountName,
+    companyBankSortCode: req.body.companyBankSortCode,
+    companyBankAccountNumber: req.body.companyBankAccountNumber,
+    companyBuildingSocietyRollNumber: req.body.companyBuildingSocietyRollNumber,
+    holdsUnmarkedBankStatements: req.body.holdsUnmarkedBankStatements,
+    companyBankAccountAnalysisCompleted: req.body.companyBankAccountAnalysisCompleted
+  }
+
+  if (String(req.body.holdsUnmarkedBankStatements).toLowerCase() === 'no') {
+    req.session.data.companyBankAccountDraft = account
+    return res.redirect('/ipservice/dcrs/v2/company-information/bank-account-analysis.html')
+  }
+
+  saveCompanyBankAccount(req, account)
+  return res.redirect('/ipservice/dcrs/v2/company-information/company-bank-accounts.html')
+})
 
 
 
